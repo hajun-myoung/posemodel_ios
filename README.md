@@ -16,7 +16,7 @@
 
 - Restore coordinates
 
-## Failure log
+### Failure log
 
 - Trial 0.1 `CoreML` `ML Package` : Not uploaded on my Github
 
@@ -92,3 +92,16 @@
             
             - 오버 테크놀로지라는 판단으로, 중단함
 
+## Ohter Ideas
+
+1. MeidaPipe Object Detection을 구현하고, 사람이 포함된 이미지를 처리해서 Person Object Index를 추론한다면?
+
+    - MediaPipe Object Detection은 Label, Score, Name, Index를 제공하므로 가능해보임
+    
+    - 그러나, 모델의 Indexing이 바뀌었을 경우 대응하지 못함
+    
+        - 이건 기존 방법(Object Detection -> Pose Model)도 동일함
+        
+    - 속도 문제를 안고 가야함
+    
+        - 포즈 모델만 쓰는 경우에 비해 Image Processing, Model Loading, Invoking에 더 많은 시간 필요
