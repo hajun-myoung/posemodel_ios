@@ -15,8 +15,9 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Give Image: testImage")
+            Text("Given Image: testImage")
                 .font(.system(size: 20, design: .serif))
+                .underline()
             
             Image(uiImage: testImage)
                 .resizable()
@@ -39,7 +40,6 @@ struct ContentView: View {
                 Text("No Resized Image is Loaded Yet")
                     .font(.system(size: 20, design: .serif))
             }
-            
         }
         .padding()
     }
