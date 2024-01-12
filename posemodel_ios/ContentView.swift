@@ -6,14 +6,19 @@
 //
 
 import SwiftUI
+import UIKit
+
+let testImage:UIImage = UIImage(named: "testimage")!
 
 struct ContentView: View {
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Give Image: testImage")
+                .font(.system(size: 20, design: .serif))
+            
+            Image(uiImage: testImage)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
         }
         .padding()
     }
