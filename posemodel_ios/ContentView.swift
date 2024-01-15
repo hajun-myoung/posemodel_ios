@@ -8,7 +8,7 @@
 import SwiftUI
 import UIKit
 
-let testImage:UIImage = UIImage(named: "testimage")!
+let testImage:UIImage = UIImage(named: "test001_02")!
 var model:PoseModel? = nil
 var pixelBuffer: CVPixelBuffer? = nil
 var resultResult: Result? = nil
