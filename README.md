@@ -2,7 +2,19 @@
 
 - Pose Model을 Native Swift 베이스로 구현하고자 함
 
-## Current Trying Logic
+- 이전 시도들과 달리, Try and Error 모두를 이 레포지토리에 업로드 및 트래킹하고자 함
+
+## Update Log
+
+### Jan 15, 2024 (Trial 3.0)
+
+1. Object Detection 기반, "Person" Object의 Index 추출
+
+1. 추출된 index 기반으로, Person Object 좌표 추출
+
+1. Pose Detecting
+
+### Jan 12, 2024
 
 - Get Original Image (Arbitary Resolution)
 
@@ -91,17 +103,3 @@
                 - 그러나 19,206개의 Object Indexing Table을 찾지 못함
             
             - 오버 테크놀로지라는 판단으로, 중단함
-
-## Ohter Ideas
-
-1. MeidaPipe Object Detection을 구현하고, 사람이 포함된 이미지를 처리해서 Person Object Index를 추론한다면?
-
-    - MediaPipe Object Detection은 Label, Score, Name, Index를 제공하므로 가능해보임
-    
-    - 그러나, 모델의 Indexing이 바뀌었을 경우 대응하지 못함
-    
-        - 이건 기존 방법(Object Detection -> Pose Model)도 동일함
-        
-    - 속도 문제를 안고 가야함
-    
-        - 포즈 모델만 쓰는 경우에 비해 Image Processing, Model Loading, Invoking에 더 많은 시간 필요
