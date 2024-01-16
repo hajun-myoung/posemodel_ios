@@ -14,12 +14,9 @@
 		F945AB012B50DAFB009C2D61 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F945AB002B50DAFB009C2D61 /* Preview Assets.xcassets */; };
 		F945AB092B50DF41009C2D61 /* human_detected_ios.png in Resources */ = {isa = PBXBuildFile; fileRef = F945AB082B50DF41009C2D61 /* human_detected_ios.png */; };
 		F945AB0C2B510044009C2D61 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F945AB0B2B510044009C2D61 /* UIImageExtension.swift */; };
-		F945AB102B512882009C2D61 /* pose_landmark_full.tflite in Resources */ = {isa = PBXBuildFile; fileRef = F945AB0F2B512882009C2D61 /* pose_landmark_full.tflite */; };
 		F945AB122B5128B8009C2D61 /* HandlePosemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F945AB112B5128B8009C2D61 /* HandlePosemodel.swift */; };
-		F94D9ECD2B525E9100182F09 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94D9ECC2B525E9100182F09 /* Constants.swift */; };
 		F94D9ECF2B5282AA00182F09 /* MathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94D9ECE2B5282AA00182F09 /* MathExtension.swift */; };
 		F94D9ED12B52852000182F09 /* Drawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94D9ED02B52852000182F09 /* Drawer.swift */; };
-		F9572D2E2B513F310063C0AF /* CVPixelBufferExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9572D2D2B513F310063C0AF /* CVPixelBufferExtension.swift */; };
 		F9572D302B513F3F0063C0AF /* TFLiteExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9572D2F2B513F3F0063C0AF /* TFLiteExtension.swift */; };
 		F9572D322B513F500063C0AF /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9572D312B513F500063C0AF /* CGSizeExtension.swift */; };
 		F9572D342B5140480063C0AF /* converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9572D332B5140480063C0AF /* converter.swift */; };
@@ -37,12 +34,9 @@
 		F945AB072B50DB09009C2D61 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F945AB082B50DF41009C2D61 /* human_detected_ios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = human_detected_ios.png; sourceTree = "<group>"; };
 		F945AB0B2B510044009C2D61 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
-		F945AB0F2B512882009C2D61 /* pose_landmark_full.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = pose_landmark_full.tflite; sourceTree = "<group>"; };
 		F945AB112B5128B8009C2D61 /* HandlePosemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlePosemodel.swift; sourceTree = "<group>"; };
-		F94D9ECC2B525E9100182F09 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F94D9ECE2B5282AA00182F09 /* MathExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathExtension.swift; sourceTree = "<group>"; };
 		F94D9ED02B52852000182F09 /* Drawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawer.swift; sourceTree = "<group>"; };
-		F9572D2D2B513F310063C0AF /* CVPixelBufferExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPixelBufferExtension.swift; sourceTree = "<group>"; };
 		F9572D2F2B513F3F0063C0AF /* TFLiteExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLiteExtension.swift; sourceTree = "<group>"; };
 		F9572D312B513F500063C0AF /* CGSizeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
 		F9572D332B5140480063C0AF /* converter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = converter.swift; sourceTree = "<group>"; };
@@ -109,7 +103,6 @@
 				F945AAFD2B50DAFB009C2D61 /* Assets.xcassets */,
 				F945AAFF2B50DAFB009C2D61 /* Preview Content */,
 				F9572D332B5140480063C0AF /* converter.swift */,
-				F94D9ECC2B525E9100182F09 /* Constants.swift */,
 			);
 			path = posemodel_ios;
 			sourceTree = "<group>";
@@ -126,7 +119,6 @@
 			isa = PBXGroup;
 			children = (
 				F945AB0B2B510044009C2D61 /* UIImageExtension.swift */,
-				F9572D2D2B513F310063C0AF /* CVPixelBufferExtension.swift */,
 				F9572D2F2B513F3F0063C0AF /* TFLiteExtension.swift */,
 				F9572D312B513F500063C0AF /* CGSizeExtension.swift */,
 				F94D9ECE2B5282AA00182F09 /* MathExtension.swift */,
@@ -137,7 +129,6 @@
 		F945AB0D2B510A9F009C2D61 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F945AB0F2B512882009C2D61 /* pose_landmark_full.tflite */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -210,7 +201,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F945AB012B50DAFB009C2D61 /* Preview Assets.xcassets in Resources */,
-				F945AB102B512882009C2D61 /* pose_landmark_full.tflite in Resources */,
 				F945AAFE2B50DAFB009C2D61 /* Assets.xcassets in Resources */,
 				F945AB092B50DF41009C2D61 /* human_detected_ios.png in Resources */,
 			);
@@ -248,7 +238,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9572D2E2B513F310063C0AF /* CVPixelBufferExtension.swift in Sources */,
 				F945AB122B5128B8009C2D61 /* HandlePosemodel.swift in Sources */,
 				F9572D342B5140480063C0AF /* converter.swift in Sources */,
 				F9572D322B513F500063C0AF /* CGSizeExtension.swift in Sources */,
@@ -257,7 +246,6 @@
 				F945AAFC2B50DAF9009C2D61 /* ContentView.swift in Sources */,
 				F94D9ECF2B5282AA00182F09 /* MathExtension.swift in Sources */,
 				F945AAFA2B50DAF9009C2D61 /* posemodel_iosApp.swift in Sources */,
-				F94D9ECD2B525E9100182F09 /* Constants.swift in Sources */,
 				F94D9ED12B52852000182F09 /* Drawer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
