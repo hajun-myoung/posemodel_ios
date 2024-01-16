@@ -152,6 +152,8 @@
 				F945AAF22B50DAF9009C2D61 /* Sources */,
 				F945AAF32B50DAF9009C2D61 /* Frameworks */,
 				F945AAF42B50DAF9009C2D61 /* Resources */,
+				181B88653AFA06204B84D818 /* [CP] Embed Pods Frameworks */,
+				A46A072D24E3D36390DEC81C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -209,6 +211,40 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		181B88653AFA06204B84D818 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A46A072D24E3D36390DEC81C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E93846E79C4E4AEC8A7AEA5D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

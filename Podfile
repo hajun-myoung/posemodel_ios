@@ -6,5 +6,5 @@ target 'posemodel_ios' do
   use_frameworks!
 
   # Pods for posemodel_ios
-  pod 'TensorFlowLiteSwift'
+  pod 'GoogleMLKit/PoseDetectionAccurate', '3.2.0'
 end
