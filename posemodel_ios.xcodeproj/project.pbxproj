@@ -17,8 +17,6 @@
 		F945AB122B5128B8009C2D61 /* HandlePosemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F945AB112B5128B8009C2D61 /* HandlePosemodel.swift */; };
 		F94D9ECF2B5282AA00182F09 /* MathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94D9ECE2B5282AA00182F09 /* MathExtension.swift */; };
 		F94D9ED12B52852000182F09 /* Drawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94D9ED02B52852000182F09 /* Drawer.swift */; };
-		F9572D302B513F3F0063C0AF /* TFLiteExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9572D2F2B513F3F0063C0AF /* TFLiteExtension.swift */; };
-		F9572D322B513F500063C0AF /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9572D312B513F500063C0AF /* CGSizeExtension.swift */; };
 		F9572D342B5140480063C0AF /* converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9572D332B5140480063C0AF /* converter.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,8 +35,6 @@
 		F945AB112B5128B8009C2D61 /* HandlePosemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlePosemodel.swift; sourceTree = "<group>"; };
 		F94D9ECE2B5282AA00182F09 /* MathExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathExtension.swift; sourceTree = "<group>"; };
 		F94D9ED02B52852000182F09 /* Drawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawer.swift; sourceTree = "<group>"; };
-		F9572D2F2B513F3F0063C0AF /* TFLiteExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLiteExtension.swift; sourceTree = "<group>"; };
-		F9572D312B513F500063C0AF /* CGSizeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
 		F9572D332B5140480063C0AF /* converter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = converter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,8 +115,6 @@
 			isa = PBXGroup;
 			children = (
 				F945AB0B2B510044009C2D61 /* UIImageExtension.swift */,
-				F9572D2F2B513F3F0063C0AF /* TFLiteExtension.swift */,
-				F9572D312B513F500063C0AF /* CGSizeExtension.swift */,
 				F94D9ECE2B5282AA00182F09 /* MathExtension.swift */,
 			);
 			path = Extensions;
@@ -152,8 +146,8 @@
 				F945AAF22B50DAF9009C2D61 /* Sources */,
 				F945AAF32B50DAF9009C2D61 /* Frameworks */,
 				F945AAF42B50DAF9009C2D61 /* Resources */,
-				181B88653AFA06204B84D818 /* [CP] Embed Pods Frameworks */,
-				A46A072D24E3D36390DEC81C /* [CP] Copy Pods Resources */,
+				D8DBE55FB34D4AA49DCAA1CA /* [CP] Embed Pods Frameworks */,
+				6587A27BD8877F7ADC5D1288 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -211,24 +205,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		181B88653AFA06204B84D818 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A46A072D24E3D36390DEC81C /* [CP] Copy Pods Resources */ = {
+		6587A27BD8877F7ADC5D1288 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -243,6 +220,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8DBE55FB34D4AA49DCAA1CA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-posemodel_ios/Pods-posemodel_ios-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E93846E79C4E4AEC8A7AEA5D /* [CP] Check Pods Manifest.lock */ = {
@@ -276,9 +270,7 @@
 			files = (
 				F945AB122B5128B8009C2D61 /* HandlePosemodel.swift in Sources */,
 				F9572D342B5140480063C0AF /* converter.swift in Sources */,
-				F9572D322B513F500063C0AF /* CGSizeExtension.swift in Sources */,
 				F945AB0C2B510044009C2D61 /* UIImageExtension.swift in Sources */,
-				F9572D302B513F3F0063C0AF /* TFLiteExtension.swift in Sources */,
 				F945AAFC2B50DAF9009C2D61 /* ContentView.swift in Sources */,
 				F94D9ECF2B5282AA00182F09 /* MathExtension.swift in Sources */,
 				F945AAFA2B50DAF9009C2D61 /* posemodel_iosApp.swift in Sources */,
@@ -326,7 +318,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -389,7 +381,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -432,6 +424,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hajunmyoung.posemodel-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -462,6 +457,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hajunmyoung.posemodel-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
