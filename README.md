@@ -6,7 +6,9 @@
 
 ## Update Log
 
-### Jan 15, 2024 (Trial 3.0)
+### Jan 15, 2024 (Trial 3.1)
+
+1. Object Detection Model File + Label List를 이용해, Labeled Model File 생성
 
 1. Object Detection 기반, "Person" Object의 Index 추출
 
@@ -30,18 +32,40 @@
 
 ### Failure log
 
-- Trial 0.1 `CoreML` `ML Package` : Not uploaded on my Github
+- Trial 3.0 `Object Detection Manually` `This Repository`
 
-    - Apple에서 AI Model을 돌리기 위해 추천하는, CoreML을 사용하고자 함
+    - Object Detection 기반, "Person" Object의 Index 추출을 시도하였으나 실패
     
-    - `coremltools` Python 라이브러리를 이용하면, `.pb` `.h5` 등의 모델 파일을 CoreML을 위한 ML Package로 변환 가능
+        - 미리 설정되어있지 않아, -1(Default value)만 출력됨
+
+- Trial 2.0 `Object Detection` `Swift` [Repository](https://github.com/hajun-myoung/posemodel_test2)
+
+    - Object Detection으로 "human" object를 탐색 ➡️ 해당 Object 근처 정방형 크롭 ➡️ PoseModel Invoking 순서로 구현해보고자 함
     
-    - **Problem**: 그러나, 포즈모델의 모델 파일을 구할 수 없음
+    - MediaPipe 공식 문서를 참조, Object Detection 구현에 성공
     
-        - `.pbtxt` `.tflite` 정도만 구할 수 있었음
-    
-        - 해당 파일들은 모델 파일이 아닌, "trained model" 로, `coremltools`와 호환되지 않는 것으로 보임
+        - ![Object Detcted Demo](./human_detected_ios.png)
         
+    - **Problem**: `TensorFlowLite` 설치 실패
+    
+        - MediaPipe Object Detection을 쓰기 위한 Pods 라이브러리 `MediapipeVisionTasks`와 충돌
+        
+        - 빌드 실패
+        
+        - Object Detection도 `.tflite` Trained Model을 직접 읽는 방식을 시도함
+        
+            - Model Invoking까지 성공했으나, 결과 해석에 실패함
+            
+            - Output Tensor의 Dimension이 (1, 19206, 4)으로, 매우 큼
+            
+                - 해당 Tensor는 라벨링 없이, Float32 형태의 데이터만 나열되어 있음
+            
+                - 19,206개의 Segmentation 가능한 Object 종류 + 4개의 좌표 정보(x, y, widht, height)로 추정
+                
+                - 그러나 19,206개의 Object Indexing Table을 찾지 못함
+            
+            - 오버 테크놀로지라는 판단으로, 중단함
+            
 - Trial 1.0 `TensorFlowLite` `Swift` : Not uploaded on my Github
 
     - QuickPose, PoseNet 프로젝트처럼 `TensorFlowLite`를 iOS에서 사용하는 방법을 시도
@@ -75,31 +99,15 @@
             - 그러나, 오인식률이 너무 높아짐
             
                 - 추정 원인: 검정색 픽셀로 채워진 그림은 모델이 Train 된 환경이 아님
-            
-- Trial 2.0 `Object Detection` `Swift` [Repository](https://github.com/hajun-myoung/posemodel_test2)
 
-    - Object Detection으로 "human" object를 탐색 ➡️ 해당 Object 근처 정방형 크롭 ➡️ PoseModel Invoking 순서로 구현해보고자 함
+- Trial 0.1 `CoreML` `ML Package` : Not uploaded on my Github
+
+    - Apple에서 AI Model을 돌리기 위해 추천하는, CoreML을 사용하고자 함
     
-    - MediaPipe 공식 문서를 참조, Object Detection 구현에 성공
+    - `coremltools` Python 라이브러리를 이용하면, `.pb` `.h5` 등의 모델 파일을 CoreML을 위한 ML Package로 변환 가능
     
-        - ![Object Detcted Demo](./human_detected_ios.png)
-        
-    - **Problem**: `TensorFlowLite` 설치 실패
+    - **Problem**: 그러나, 포즈모델의 모델 파일을 구할 수 없음
     
-        - MediaPipe Object Detection을 쓰기 위한 Pods 라이브러리 `MediapipeVisionTasks`와 충돌
-        
-        - 빌드 실패
-        
-        - Object Detection도 `.tflite` Trained Model을 직접 읽는 방식을 시도함
-        
-            - Model Invoking까지 성공했으나, 결과 해석에 실패함
-            
-            - Output Tensor의 Dimension이 (1, 19206, 4)으로, 매우 큼
-            
-                - 해당 Tensor는 라벨링 없이, Float32 형태의 데이터만 나열되어 있음
-            
-                - 19,206개의 Segmentation 가능한 Object 종류 + 4개의 좌표 정보(x, y, widht, height)로 추정
-                
-                - 그러나 19,206개의 Object Indexing Table을 찾지 못함
-            
-            - 오버 테크놀로지라는 판단으로, 중단함
+        - `.pbtxt` `.tflite` 정도만 구할 수 있었음
+    
+        - 해당 파일들은 모델 파일이 아닌, "trained model" 로, `coremltools`와 호환되지 않는 것으로 보임
