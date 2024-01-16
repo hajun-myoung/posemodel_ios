@@ -6,37 +6,31 @@
 
 ## Update Log
 
-### Jan 15, 2024 (Trial 3.1)
+### Jan 16, 2024 (Trial 4.1)
 
-1. Object Detection Model File + Label List를 이용해, Labeled Model File 생성
+- Trail 4.0 `Google MLKit` `PoseDetection`
 
-1. Object Detection 기반, "Person" Object의 Index 추출
-
-1. 추출된 index 기반으로, Person Object 좌표 추출
-
-1. Pose Detecting
-
-### Jan 12, 2024
-
-- Get Original Image (Arbitary Resolution)
-
-- Resizing to fit with Input Tensor dimensions
-
-    - Ignore original image's width-height ratio
+    - Google에서 제공하는 MLKit Official Document를 다시 참고했는데, 일전에 없었던(것 같은) iOS를 지원함
     
-    - a.k.a 찌그러뜨리기
+    - 적용 및 테스트
 
-- Invoiing the Model
+### Failure log (Date Modified, Descending)
 
-- Restore coordinates
+- Trial 3.1 `Jan 15, 2024`
 
-### Failure log
+    - Pretrained Modelfile(`.tflite`)에 Metadata를 포함시켜서 실행
+    
+    - `#Trial3.0`과 마찬가지로, index가 -1로 추출됨
 
 - Trial 3.0 `Object Detection Manually` `This Repository`
 
     - Object Detection 기반, "Person" Object의 Index 추출을 시도하였으나 실패
     
         - 미리 설정되어있지 않아, -1(Default value)만 출력됨
+        
+- Trial 1.1 `Image Resizing` `Jan 12, 2024`
+
+    - 이미지 찌그러트려서 PoseModel 적용 시도: 예상대로 정확도가 너무 낮음
 
 - Trial 2.0 `Object Detection` `Swift` [Repository](https://github.com/hajun-myoung/posemodel_test2)
 
