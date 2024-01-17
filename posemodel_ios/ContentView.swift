@@ -8,13 +8,17 @@
 import SwiftUI
 import UIKit
 import MLKitVision
+import MLKitPoseDetectionAccurate
 
 let testImage:UIImage = UIImage(named: "test001_02")!
-var poseEstimationModel: PoseEstimator? = nil
+var poseDetector: PoseEstimator? = nil
+var vImage: VisionImage? = nil
+var poseResults:[String:CGPoint]? = nil
 
 struct ContentView: View {
     @State var isVisionImageConverted: Bool = false
     @State var isModelLoaded: Bool = false
+    @State var isPoseDetected: Bool = false
     var body: some View {
         ScrollView{
             VStack {
@@ -31,7 +35,7 @@ struct ContentView: View {
                     .aspectRatio(contentMode: .fit)
                 
                 Button {
-                    poseEstimationModel = PoseEstimator()
+                    poseDetector = PoseEstimator()
                     isModelLoaded = true
                 } label: {
                     Label("Load Model", systemImage: "arrow.down.app.fill")
@@ -50,8 +54,8 @@ struct ContentView: View {
                 }
                 
                 Button {
-                    let vImage = VisionImage(image: testImage)
-                    vImage.orientation = testImage.imageOrientation
+                    vImage = VisionImage(image: testImage)
+                    vImage!.orientation = testImage.imageOrientation
                     isVisionImageConverted = true
                 } label: {
                     Label("Convert to VisionImage", systemImage: "sunglasses")
@@ -69,6 +73,33 @@ struct ContentView: View {
                         .padding()
                 }
                 
+                Button {
+                    poseResults = poseDetector!.detectPose(image: vImage!)
+                    
+                    if poseResults != nil {
+                        isPoseDetected = true
+                    }
+                } label: {
+                    Label("Detect Pose", systemImage: "exclamationmark.magnifyingglass")
+                        .font(.system(size: 24, weight: .bold))
+                }
+                
+                if isPoseDetected {
+                    Text("Pose Detected")
+                        .font(.system(size: 20, design: .serif))
+                        .padding()
+                } else {
+                    Text("No Pose Detected, Yet")
+                        .font(.system(size: 20, design: .serif))
+                        .padding()
+                }
+                
+                Button {
+                    
+                } label: {
+                    Label("Draw the Pose", systemImage: "exclamationmark.magnifyingglass")
+                        .font(.system(size: 24, weight: .bold))
+                }
             }
             .padding()
         }
