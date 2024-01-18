@@ -14,15 +14,17 @@ let testImage:UIImage = UIImage(named: "test001_02")!
 var poseDetector: PoseEstimator? = nil
 var vImage: VisionImage? = nil
 var poseResults:[String:CGPoint]? = nil
+var poseCanvas: canvas? = nil
 
 struct ContentView: View {
     @State var isVisionImageConverted: Bool = false
     @State var isModelLoaded: Bool = false
     @State var isPoseDetected: Bool = false
+    @State var resultImage: UIImage? = nil
     var body: some View {
         ScrollView{
             VStack {
-                Text("Ver. Jan13.1637")
+                Text("Ver. Jan17.1807")
                     .font(.system(size: 12, design: .serif))
                     .underline()
                 
@@ -74,11 +76,8 @@ struct ContentView: View {
                 }
                 
                 Button {
-                    poseResults = poseDetector!.detectPose(image: vImage!)
-                    
-                    if poseResults != nil {
-                        isPoseDetected = true
-                    }
+                    poseDetector!.detectPose(image: vImage!)
+                    isPoseDetected = true
                 } label: {
                     Label("Detect Pose", systemImage: "exclamationmark.magnifyingglass")
                         .font(.system(size: 24, weight: .bold))
@@ -95,10 +94,23 @@ struct ContentView: View {
                 }
                 
                 Button {
+                    poseCanvas = canvas(size: testImage.size)
+                    poseResults = poseDetector!.get_poseresults()
                     
+                    var joints: [CGPoint] = []
+                    for value in Array(poseResults!.values) {
+                        joints.append(value)
+                    }
+                    resultImage = poseCanvas?.draw_dots(image: testImage, dots: joints)
                 } label: {
                     Label("Draw the Pose", systemImage: "exclamationmark.magnifyingglass")
                         .font(.system(size: 24, weight: .bold))
+                }
+                
+                if let resultImage {
+                    Image(uiImage: resultImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 }
             }
             .padding()

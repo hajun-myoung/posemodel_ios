@@ -8,6 +8,11 @@
 import Foundation
 import UIKit
 
+struct Line {
+    let from: CGPoint
+    let to: CGPoint
+}
+
 class canvas {
     private var frame: UIGraphicsImageRenderer
     
@@ -15,31 +20,48 @@ class canvas {
         self.frame = UIGraphicsImageRenderer(size: size)
     }
     
-    func draw_dots(image: UIImage, dots: [CGPoint], radius:CGFloat = 2) -> UIImage{
-        let COLOR_MAX = 255
-        let red = 255, green = 165, blue = 0
-
-        let myColor = UIColor(
+    func draw_dots(image: UIImage, dots: [CGPoint], radius:CGFloat = 5) -> UIImage{
+        let COLOR_MAX = 255.0
+        let red = 52.0, green = 155.0, blue = 235.0
+        let red2 = 255.0, green2 = 64.0, blue2 = 70.0
+        
+        let blueColor = UIColor(
             red: CGFloat(red / COLOR_MAX),
             green: CGFloat(green / COLOR_MAX),
             blue: CGFloat(blue / COLOR_MAX),
             alpha: CGFloat(1)
         )
         
+        print(blueColor)
+        
         let renderedImage = frame.image { context in
             image.draw(at: CGPointZero)
-            myColor.setFill()
             
+            blueColor.setFill()
             for dot in dots {
-                print(dot)
                 let rect = CGRect(
                     x: dot.x - radius, y: dot.y - radius,
                     width: 2 * radius, height: 2 * radius
                 )
                 context.cgContext.fillEllipse(in: rect)
             }
+            
+            blueColor.setStroke()
+
+            for dot in dots {
+                let radius = radius * 1.5
+                let rect = CGRect(
+                    x: dot.x - radius, y: dot.y - radius,
+                    width: 2 * radius, height: 2 * radius
+                )
+                context.cgContext.strokeEllipse(in: rect)
+            }
         }
         
         return renderedImage
+    }
+    
+    func draw_lines(image: UIImage, lines: [Line]) -> UIImage {
+        
     }
 }
