@@ -101,7 +101,12 @@ struct ContentView: View {
                     for value in Array(poseResults!.values) {
                         joints.append(value)
                     }
+                    
+                    // Draw the dots
                     resultImage = poseCanvas?.draw_dots(image: testImage, dots: joints)
+                    // Draw the lines
+                    let lines = poseDetector!.get_lines()
+                    resultImage = poseCanvas?.draw_lines(image: resultImage!, lines: lines)
                 } label: {
                     Label("Draw the Pose", systemImage: "exclamationmark.magnifyingglass")
                         .font(.system(size: 24, weight: .bold))

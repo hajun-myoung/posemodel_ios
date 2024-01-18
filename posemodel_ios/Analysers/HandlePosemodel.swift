@@ -10,6 +10,11 @@ import Foundation
 import MLKitPoseDetectionAccurate
 import MLKitVision
 
+struct Line {
+    let from: CGPoint
+    let to: CGPoint
+}
+
 class PoseEstimator {
     private var poseDetector: PoseDetector? = nil
     private var poseResults: [String : CGPoint]? = nil
@@ -68,5 +73,47 @@ class PoseEstimator {
     
     func get_poseresults() -> [String:CGPoint]?{
         return self.poseResults
+    }
+    
+    func get_dots() -> [CGPoint] {
+        var joints: [CGPoint] = []
+        for value in Array(self.poseResults!.values) {
+            joints.append(value)
+        }
+        
+        return joints
+    }
+    
+    func get_lines() -> [Line]{
+        let poseResults = self.poseResults!
+        
+        let lineTargets = [
+            (from: "leftShoulder", to: "rightShoulder"),
+            (from: "leftHip", to: "rightHip"),
+            (from: "leftShoulder", to: "leftElbow"),
+            (from: "leftElbow", to: "leftWrist"),
+            (from: "leftShoulder", to: "leftHip"),
+            (from: "leftHip", to: "leftKnee"),
+            (from: "leftKnee", to: "leftAnkle"),
+            (from: "leftAnkle", to: "leftHeel"),
+            (from: "leftHeel", to: "leftToe"),
+            (from: "leftToe", to: "leftAnkle"),
+            (from: "rightShoulder", to: "rightElbow"),
+            (from: "rightElbow", to: "rightWrist"),
+            (from: "rightShoulder", to: "rightHip"),
+            (from: "rightHip", to: "rightKnee"),
+            (from: "rightKnee", to: "rightAnkle"),
+            (from: "rightAnkle", to: "rightHeel"),
+            (from: "rightHeel", to: "rightToe"),
+            (from: "rightToe", to: "rightAnkle"),
+        ]
+        
+        var lines:[Line] = []
+        for (from, to) in lineTargets {
+            let newLine = Line(from: poseResults[from]!, to: poseResults[to]!)
+            lines.append(newLine)
+        }
+        
+        return lines
     }
 }

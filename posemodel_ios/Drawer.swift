@@ -8,11 +8,6 @@
 import Foundation
 import UIKit
 
-struct Line {
-    let from: CGPoint
-    let to: CGPoint
-}
-
 class canvas {
     private var frame: UIGraphicsImageRenderer
     
@@ -31,8 +26,6 @@ class canvas {
             blue: CGFloat(blue / COLOR_MAX),
             alpha: CGFloat(1)
         )
-        
-        print(blueColor)
         
         let renderedImage = frame.image { context in
             image.draw(at: CGPointZero)
@@ -61,7 +54,31 @@ class canvas {
         return renderedImage
     }
     
-    func draw_lines(image: UIImage, lines: [Line]) -> UIImage {
+    func draw_lines(image: UIImage, lines: [Line], lineWidth: Double = 3.0) -> UIImage {
+        let COLOR_MAX = 255.0
+        let red = 52.0, green = 155.0, blue = 235.0
+        let red2 = 255.0, green2 = 64.0, blue2 = 70.0
         
+        let blueColor = CGColor(
+            red: CGFloat(red / COLOR_MAX),
+            green: CGFloat(green / COLOR_MAX),
+            blue: CGFloat(blue / COLOR_MAX),
+            alpha: CGFloat(1)
+        )
+        
+        let renderedImage = frame.image { context in
+            image.draw(at: CGPointZero)
+            context.cgContext.setStrokeColor(blueColor)
+            context.cgContext.setLineWidth(lineWidth)
+            
+            for line in lines {
+                context.cgContext.beginPath()
+                context.cgContext.move(to: line.from)
+                context.cgContext.addLine(to: line.to)
+                context.cgContext.strokePath()
+            }
+        }
+        
+        return renderedImage
     }
 }
