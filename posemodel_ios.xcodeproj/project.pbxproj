@@ -90,10 +90,10 @@
 		F945AAF82B50DAF9009C2D61 /* posemodel_ios */ = {
 			isa = PBXGroup;
 			children = (
+				F9B937802B5FCD260093C1CA /* Views */,
 				F945AB0E2B510AA7009C2D61 /* Analysers */,
 				F945AB0A2B510010009C2D61 /* Extensions */,
 				F945AAF92B50DAF9009C2D61 /* posemodel_iosApp.swift */,
-				F945AAFB2B50DAF9009C2D61 /* ContentView.swift */,
 				F94D9ED02B52852000182F09 /* Drawer.swift */,
 				F945AAFD2B50DAFB009C2D61 /* Assets.xcassets */,
 				F945AAFF2B50DAFB009C2D61 /* Preview Content */,
@@ -125,6 +125,14 @@
 				F945AB112B5128B8009C2D61 /* HandlePosemodel.swift */,
 			);
 			path = Analysers;
+			sourceTree = "<group>";
+		};
+		F9B937802B5FCD260093C1CA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F945AAFB2B50DAF9009C2D61 /* ContentView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
