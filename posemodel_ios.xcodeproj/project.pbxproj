@@ -18,6 +18,7 @@
 		F94D9ECF2B5282AA00182F09 /* MathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94D9ECE2B5282AA00182F09 /* MathExtension.swift */; };
 		F94D9ED12B52852000182F09 /* Drawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94D9ED02B52852000182F09 /* Drawer.swift */; };
 		F9572D342B5140480063C0AF /* converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9572D332B5140480063C0AF /* converter.swift */; };
+		F9B937872B60CEAE0093C1CA /* testvideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F9B937862B60CEAE0093C1CA /* testvideo.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		F94D9ECE2B5282AA00182F09 /* MathExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathExtension.swift; sourceTree = "<group>"; };
 		F94D9ED02B52852000182F09 /* Drawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawer.swift; sourceTree = "<group>"; };
 		F9572D332B5140480063C0AF /* converter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = converter.swift; sourceTree = "<group>"; };
+		F9B937862B60CEAE0093C1CA /* testvideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = testvideo.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 		F945AAF82B50DAF9009C2D61 /* posemodel_ios */ = {
 			isa = PBXGroup;
 			children = (
+				F9B937852B60CE8E0093C1CA /* Videos */,
 				F9B937802B5FCD260093C1CA /* Views */,
 				F945AB0E2B510AA7009C2D61 /* Analysers */,
 				F945AB0A2B510010009C2D61 /* Extensions */,
@@ -133,6 +136,14 @@
 				F945AAFB2B50DAF9009C2D61 /* ContentView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F9B937852B60CE8E0093C1CA /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				F9B937862B60CEAE0093C1CA /* testvideo.mp4 */,
+			);
+			path = Videos;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F945AB012B50DAFB009C2D61 /* Preview Assets.xcassets in Resources */,
+				F9B937872B60CEAE0093C1CA /* testvideo.mp4 in Resources */,
 				F945AAFE2B50DAFB009C2D61 /* Assets.xcassets in Resources */,
 				F945AB092B50DF41009C2D61 /* human_detected_ios.png in Resources */,
 			);

@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 import MLKitVision
 import MLKitPoseDetectionAccurate
+import AVKit
 
 let testImage:UIImage = UIImage(named: "test001_02")!
 var poseDetector: PoseEstimator? = nil
@@ -21,6 +22,15 @@ struct ContentView: View {
     @State var isModelLoaded: Bool = false
     @State var isPoseDetected: Bool = false
     @State var resultImage: UIImage? = nil
+    
+    // Video Variables
+    @ State private var player: AVPlayer? = AVPlayer(
+        url: Bundle.main.url(
+            forResource: "testvideo", withExtension: "mp4"
+        )!
+    )
+    @State private var isVideoPlaying: Bool = false
+    
     var body: some View {
         ScrollView{
             VStack {
@@ -116,6 +126,15 @@ struct ContentView: View {
                     Image(uiImage: resultImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                }
+                
+                if let player = player {
+                    VideoPlayer(player: player)
+                        .aspectRatio(contentMode: .fit)
+                } else {
+                    Text("No Video Loaded")
+                        .font(.system(size: 20, design: .serif))
+                        .padding()
                 }
             }
             .padding()
