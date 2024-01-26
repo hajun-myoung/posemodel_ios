@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 import MLKitVision
 import MLKitPoseDetectionAccurate
 import AVKit
@@ -16,6 +15,8 @@ var poseDetector: PoseEstimator? = nil
 var vImage: VisionImage? = nil
 var poseResults:[String:CGPoint]? = nil
 var poseCanvas: canvas? = nil
+var countedFrames: Int? = 0
+let videoURL = Bundle.main.url(forResource: "testvideo2", withExtension: "mp4")!
 
 struct ContentView: View {
     @State var isVisionImageConverted: Bool = false
@@ -24,12 +25,12 @@ struct ContentView: View {
     @State var resultImage: UIImage? = nil
     
     // Video Variables
-    @ State private var player: AVPlayer? = AVPlayer(
+    @State private var player: AVPlayer? = AVPlayer(
         url: Bundle.main.url(
-            forResource: "testvideo", withExtension: "mp4"
+            forResource: "testvideo2", withExtension: "mp4"
         )!
     )
-    @State private var isVideoPlaying: Bool = false
+    @State private var testframe: UIImage? = nil
     
     var body: some View {
         ScrollView{
@@ -118,9 +119,10 @@ struct ContentView: View {
                     let lines = poseDetector!.get_lines()
                     resultImage = poseCanvas?.draw_lines(image: resultImage!, lines: lines)
                 } label: {
-                    Label("Draw the Pose", systemImage: "exclamationmark.magnifyingglass")
+                    Label("Draw the Pose", systemImage: "hand.draw.fill")
                         .font(.system(size: 24, weight: .bold))
                 }
+                .padding()
                 
                 if let resultImage {
                     Image(uiImage: resultImage)
@@ -128,7 +130,7 @@ struct ContentView: View {
                         .aspectRatio(contentMode: .fit)
                 }
                 
-                if let player = player {
+                if let player {
                     VideoPlayer(player: player)
                         .aspectRatio(contentMode: .fit)
                 } else {
@@ -136,6 +138,42 @@ struct ContentView: View {
                         .font(.system(size: 20, design: .serif))
                         .padding()
                 }
+                
+                Button(action: {
+                    Task {
+                        countedFrames = await GetFrames_fromVideo(url: videoURL)
+                    }
+                }, label: {
+                    Label("Count Frames of the Video", systemImage: "video.fill.badge.checkmark")
+                        .font(.system(size: 24, weight: .bold))
+                })
+                .padding()
+                
+                if let testframe {
+                    Image(uiImage: testframe)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding()
+                } else {
+                    Text("No Frames Extracted")
+                        .font(.system(size: 20, design: .serif))
+                        .padding()
+                }
+                
+                Button(action: {
+                    Task {
+                        let resultURL = await AnalyseVideo(url: videoURL, frames: countedFrames!)
+                        print(resultURL ?? "NO URL")
+                    }
+                }, label: {
+                    Label("Analyse Video", systemImage: "figure.run.square.stack.fill")
+                        .font(.system(size: 24, weight: .bold))
+                })
+                .padding()
+                
+                // TODO: Analyse the frames with PoseModel
+                // TODO: Stack the analyzed frames to an Array of UIImage
+                // TODO: Export the Array of UIImage to a Video
             }
             .padding()
         }
