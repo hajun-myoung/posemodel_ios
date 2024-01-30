@@ -36,53 +36,53 @@ struct ContentView: View {
                 Text("Ver. Jan17.1807")
                     .font(.system(size: 12, design: .serif))
                     .underline()
-                
-                Text("Given Image: testImage")
-                    .font(.system(size: 20, design: .serif))
-                    .underline()
-                
-                Image(uiImage: testImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                
-                Button {
-                    poseDetector = PoseEstimator()
-                    isModelLoaded = true
-                } label: {
-                    Label("Load Model", systemImage: "arrow.down.app.fill")
-                        .font(.system(size: 24, weight: .bold))
-                }
-                
-                if isModelLoaded {
-                    Text("The Model is Successfully Loaded")
-                        .font(.system(size: 20, design: .serif))
-                        .padding()
-                }
-                else {
-                    Text("Model is not Loaded")
-                    .font(.system(size: 20, design: .serif))
-                    .padding()
-                }
-                
-                Button {
-                    vImage = VisionImage(image: testImage)
-                    vImage!.orientation = testImage.imageOrientation
-                    isVisionImageConverted = true
-                } label: {
-                    Label("Convert to VisionImage", systemImage: "sunglasses")
-                        .font(.system(size: 24, weight: .bold))
-                }
-                
-                if isVisionImageConverted {
-                    Text("UIImage has been converted to VisionImage")
-                        .font(.system(size: 20, design: .serif))
-                        .padding()
-                }
-                else {
-                    Text("Not converted, Yet")
-                        .font(.system(size: 20, design: .serif))
-                        .padding()
-                }
+//                
+//                Text("Given Image: testImage")
+//                    .font(.system(size: 20, design: .serif))
+//                    .underline()
+//                
+//                Image(uiImage: testImage)
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                
+//                Button {
+//                    poseDetector = PoseEstimator()
+//                    isModelLoaded = true
+//                } label: {
+//                    Label("Load Model", systemImage: "arrow.down.app.fill")
+//                        .font(.system(size: 24, weight: .bold))
+//                }
+//                
+//                if isModelLoaded {
+//                    Text("The Model is Successfully Loaded")
+//                        .font(.system(size: 20, design: .serif))
+//                        .padding()
+//                }
+//                else {
+//                    Text("Model is not Loaded")
+//                    .font(.system(size: 20, design: .serif))
+//                    .padding()
+//                }
+//                
+//                Button {
+//                    vImage = VisionImage(image: testImage)
+//                    vImage!.orientation = testImage.imageOrientation
+//                    isVisionImageConverted = true
+//                } label: {
+//                    Label("Convert to VisionImage", systemImage: "sunglasses")
+//                        .font(.system(size: 24, weight: .bold))
+//                }
+//                
+//                if isVisionImageConverted {
+//                    Text("UIImage has been converted to VisionImage")
+//                        .font(.system(size: 20, design: .serif))
+//                        .padding()
+//                }
+//                else {
+//                    Text("Not converted, Yet")
+//                        .font(.system(size: 20, design: .serif))
+//                        .padding()
+//                }
                 
 //                Button {
 //                    poseDetector!.detectPose(image: vImage!)

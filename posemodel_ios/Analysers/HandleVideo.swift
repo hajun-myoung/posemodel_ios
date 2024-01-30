@@ -11,6 +11,11 @@ import AVFoundation
 import MLKitVision
 import MLKitPoseDetectionAccurate
 
+struct Data {
+    var imageList: [UIImage]
+    var poseResults: [[String:CGPoint]]
+}
+
 func GetFrames_fromVideo(url: URL) async -> Int?{
     let asset = AVURLAsset(url: url)
     var nFrames = 0
@@ -60,19 +65,16 @@ func testImageGenerator(url: URL) -> UIImage? {
     return uiImage
 }
 
-func AnalyseVideo(url: URL, frames: Int = -1) -> URL?{
+func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
     let poseEstimator = PoseEstimator()
-//    let poseCanvas = canvas(size: uiImage.size)
-//    let poseCanvas = canvas(size: CGSize(width: 1920, height: 1080))
 
     let asset = AVURLAsset(url: url)
-//    var imageList: [UIImage] = []
-//    var vImageList: [VisionImage] = []
-    
     let assetIG = AVAssetImageGenerator(asset: asset)
     assetIG.appliesPreferredTrackTransform = true
     assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
     
+    var imageList: [UIImage] = []
+    var poseResultsArray: [[String:CGPoint]] = []
     for currentFrame in 1..<frames {
         let cmTime = CMTime(value: CMTimeValue(currentFrame), timescale: 30)
         let imageRef: CGImage
@@ -85,9 +87,9 @@ func AnalyseVideo(url: URL, frames: Int = -1) -> URL?{
         }
         
         let uiImage = UIImage(cgImage: imageRef)
-        let visionImage = VisionImage(image: uiImage)
+        imageList.append(uiImage)
         
-        // vImageList.append(visionImage)
+        let visionImage = VisionImage(image: uiImage)
         
         poseEstimator.detectPose(image: visionImage) { results in
             if let poses = results {
@@ -119,20 +121,42 @@ func AnalyseVideo(url: URL, frames: Int = -1) -> URL?{
                         )
                         poseResults[nodename] = newPoint
                     }
-                    
-                    print(poseResults)
+                    poseResultsArray.append(poseResults)
                 }
             }
         }
     }
-    print("All Images Have Been Converted to VisionImage")
+//    
+//    let postProcessor = PostProcessor()
+//    
+//    if poseResultsArray.isEmpty {
+//        print("No Pose Results Array : Looks Like it's Asynchronos")
+//    }
+    
+    let returnData = Data(imageList: imageList, poseResults: poseResultsArray)
+    return returnData
+//
+//    for (frame, image) in imageList.enumerated() {
+//        let currentImage = image
+//        let currentJoints = Array(poseResultsArray[frame].values)
+//        let currentLines = linesArray[frame]
+//        
+//        let canvas = canvas(size: frameSize)
+//        var resultImage = canvas.draw_dots(image: currentImage, dots: currentJoints)
+//        resultImage = canvas.draw_lines(image: resultImage, lines: currentLines)
+//        
+//        imageList[frame] = resultImage
+//    }
+    
+    // if !isLineQualified {
+    //     return nil
+    // }
     
 //    let resultNodes = poseEstimator.detectPoses(images: vImageList)
-    print("The Video is Anlayzed")
 //    print(resultNodes)
     
 //    print(resultNodes![0])
-    return nil
+
 //    let tempDir = NSTemporaryDirectory()
 //    let tempURL = URL(fileURLWithPath: tempDir).appendingPathComponent("gaitstudio_resultvideo.mp4")
 //    var isSuccess = false
