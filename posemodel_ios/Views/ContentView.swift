@@ -13,24 +13,22 @@ import AVKit
 let testImage:UIImage = UIImage(named: "test001_02")!
 var poseDetector: PoseEstimator? = nil
 var vImage: VisionImage? = nil
-var poseResults:[String:CGPoint]? = nil
+var poseResults:[String:CGPoint] = [:]
 var poseCanvas: canvas? = nil
 var countedFrames: Int? = 0
-let videoURL = Bundle.main.url(forResource: "testvideo2", withExtension: "mp4")!
+let videoURL = Bundle.main.url(forResource: "testvideo", withExtension: "mp4")!
 
 struct ContentView: View {
     @State var isVisionImageConverted: Bool = false
     @State var isModelLoaded: Bool = false
-    @State var isPoseDetected: Bool = false
-    @State var resultImage: UIImage? = nil
+//    @State var isPoseDetected: Bool = false
+//    @State var resultImage: UIImage? = nil
     
     // Video Variables
-    @State private var player: AVPlayer? = AVPlayer(
-        url: Bundle.main.url(
-            forResource: "testvideo2", withExtension: "mp4"
-        )!
-    )
+    @State private var player: AVPlayer? = AVPlayer(url: videoURL)
     @State private var testframe: UIImage? = nil
+    
+    @State private var IGTestingImage: UIImage? = nil
     
     var body: some View {
         ScrollView{
@@ -86,50 +84,105 @@ struct ContentView: View {
                         .padding()
                 }
                 
-                Button {
-                    poseDetector!.detectPose(image: vImage!)
-                    isPoseDetected = true
-                } label: {
-                    Label("Detect Pose", systemImage: "exclamationmark.magnifyingglass")
-                        .font(.system(size: 24, weight: .bold))
-                }
+//                Button {
+//                    poseDetector!.detectPose(image: vImage!)
+//                 // poseDetector!.detectPose(image: testImage)
+//                    isPoseDetected = true
+//                } label: {
+//                    Label("Detect Pose", systemImage: "exclamationmark.magnifyingglass")
+//                        .font(.system(size: 24, weight: .bold))
+//                }
+//                
+//                if isPoseDetected {
+//                    Text("Pose Detected")
+//                        .font(.system(size: 20, design: .serif))
+//                        .padding()
+//                } else {
+//                    Text("No Pose Detected, Yet")
+//                        .font(.system(size: 20, design: .serif))
+//                        .padding()
+//                }
                 
-                if isPoseDetected {
-                    Text("Pose Detected")
-                        .font(.system(size: 20, design: .serif))
-                        .padding()
-                } else {
-                    Text("No Pose Detected, Yet")
-                        .font(.system(size: 20, design: .serif))
-                        .padding()
-                }
+//                Button {
+//                    poseCanvas = canvas(size: testImage.size)
+//                    poseResults = poseDetector!.get_poseresults()
+//                    
+//                    var joints: [CGPoint] = []
+//                    for value in Array(poseResults!.values) {
+//                        joints.append(value)
+//                    }
+//                    
+//                    // Draw the dots
+//                    resultImage = poseCanvas?.draw_dots(image: testImage, dots: joints)
+//                    // Draw the lines
+//                    let lines = poseDetector!.get_lines()
+//                    resultImage = poseCanvas?.draw_lines(image: resultImage!, lines: lines)
+//                } label: {
+//                    Label("Draw the Pose", systemImage: "hand.draw.fill")
+//                        .font(.system(size: 24, weight: .bold))
+//                }
+//                .padding()
                 
-                Button {
-                    poseCanvas = canvas(size: testImage.size)
-                    poseResults = poseDetector!.get_poseresults()
-                    
-                    var joints: [CGPoint] = []
-                    for value in Array(poseResults!.values) {
-                        joints.append(value)
-                    }
-                    
-                    // Draw the dots
-                    resultImage = poseCanvas?.draw_dots(image: testImage, dots: joints)
-                    // Draw the lines
-                    let lines = poseDetector!.get_lines()
-                    resultImage = poseCanvas?.draw_lines(image: resultImage!, lines: lines)
-                } label: {
-                    Label("Draw the Pose", systemImage: "hand.draw.fill")
-                        .font(.system(size: 24, weight: .bold))
-                }
-                .padding()
+//                if let resultImage {
+//                    Image(uiImage: resultImage)
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                }
+//                
+//                
+//                Button {
+//                    IGTestingImage = testImageGenerator(url: videoURL)
+////                    let results = poseDetector!.detectPose(image: IGTestingImage!)
+//                    let visionImage = VisionImage(image: IGTestingImage!)
+//                    poseDetector!.detectPose(image: visionImage) { results in
+//                        if let poses = results {
+//                            poses.forEach { pose in
+//                                let targets:[String:PoseLandmarkType] = [
+//                                    "nose": PoseLandmarkType.nose,
+//                                    "leftShoulder": PoseLandmarkType.leftShoulder,
+//                                    "rightShoulder": PoseLandmarkType.rightShoulder,
+//                                    "leftElbow": PoseLandmarkType.leftElbow,
+//                                    "rightElbow": PoseLandmarkType.rightElbow,
+//                                    "leftWrist": PoseLandmarkType.leftWrist,
+//                                    "rightWrist": PoseLandmarkType.rightWrist,
+//                                    "leftHip": PoseLandmarkType.leftHip,
+//                                    "rightHip": PoseLandmarkType.rightHip,
+//                                    "leftKnee": PoseLandmarkType.leftKnee,
+//                                    "rightKnee": PoseLandmarkType.rightKnee,
+//                                    "leftAnkle": PoseLandmarkType.leftAnkle,
+//                                    "rightAnkle": PoseLandmarkType.rightAnkle,
+//                                    "leftHeel": PoseLandmarkType.leftHeel,
+//                                    "rightHeel": PoseLandmarkType.rightHeel,
+//                                    "leftToe": PoseLandmarkType.leftToe,
+//                                    "rightToe": PoseLandmarkType.rightToe,
+//                                ]
+//                
+//                                for (nodename, node) in targets {
+//                                    let newPoint = CGPoint(
+//                                        x: pose.landmark(ofType: node).position.x,
+//                                        y: pose.landmark(ofType: node).position.y
+//                                    )
+//                                    poseResults[nodename] = newPoint
+//                                }
+//                                print(poseResults)
+//                            }
+//                        } else {
+//                            print("NO POSES")
+//                        }
+//                    }
+//                    print("Detected!")
+//                } label: {
+//                    Label("Test Image Generator", systemImage: "exclamationmark.circle")
+//                        .font(.system(size: 24, weight: .bold))
+//                }
                 
-                if let resultImage {
-                    Image(uiImage: resultImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                }
-                
+//                if let IGTestingImage {
+//                    Image(uiImage: IGTestingImage)
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .padding()
+//                }
+//                
                 if let player {
                     VideoPlayer(player: player)
                         .aspectRatio(contentMode: .fit)
@@ -149,16 +202,16 @@ struct ContentView: View {
                 })
                 .padding()
                 
-                if let testframe {
-                    Image(uiImage: testframe)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding()
-                } else {
-                    Text("No Frames Extracted")
-                        .font(.system(size: 20, design: .serif))
-                        .padding()
-                }
+//                if let testframe {
+//                    Image(uiImage: testframe)
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .padding()
+//                } else {
+//                    Text("No Frames Extracted")
+//                        .font(.system(size: 20, design: .serif))
+//                        .padding()
+//                }
                 
                 Button(action: {
                     Task {
