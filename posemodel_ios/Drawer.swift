@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class canvas {
+class Canvas {
     private var frame: UIGraphicsImageRenderer
     
     init(size: CGSize){

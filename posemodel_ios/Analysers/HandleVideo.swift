@@ -29,7 +29,7 @@ func GetFrames_fromVideo(url: URL) async -> Int?{
         reader.startReading()
         
         while true {
-            var sampleBuffer = readerOutput.copyNextSampleBuffer()
+            let sampleBuffer = readerOutput.copyNextSampleBuffer()
             if sampleBuffer ==  nil {
                 break
             }
@@ -43,27 +43,27 @@ func GetFrames_fromVideo(url: URL) async -> Int?{
     
     return nFrames
 }
-
-func testImageGenerator(url: URL) -> UIImage? {
-    let asset = AVURLAsset(url: url)
-    let assetIG = AVAssetImageGenerator(asset: asset)
-    assetIG.appliesPreferredTrackTransform = true
-    assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
-    
-    let cmTime = CMTime(value: 90, timescale: 30)
-    let imageRef: CGImage
-    
-    do {
-        imageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
-    } catch let error {
-        print(error)
-        return nil
-    }
-    
-    let uiImage = UIImage(cgImage: imageRef)
-    
-    return uiImage
-}
+//
+//func testImageGenerator(url: URL) -> UIImage? {
+//    let asset = AVURLAsset(url: url)
+//    let assetIG = AVAssetImageGenerator(asset: asset)
+//    assetIG.appliesPreferredTrackTransform = true
+//    assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
+//    
+//    let cmTime = CMTime(value: 90, timescale: 30)
+//    let imageRef: CGImage
+//    
+//    do {
+//        imageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
+//    } catch let error {
+//        print(error)
+//        return nil
+//    }
+//    
+//    let uiImage = UIImage(cgImage: imageRef)
+//    
+//    return uiImage
+//}
 
 func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
     let poseEstimator = PoseEstimator()
@@ -75,7 +75,7 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
     
     var imageList: [UIImage] = []
     var poseResultsArray: [[String:CGPoint]] = []
-    for currentFrame in 1..<frames {
+    for currentFrame in 1..<frames + 1 {
         let cmTime = CMTime(value: CMTimeValue(currentFrame), timescale: 30)
         let imageRef: CGImage
         
@@ -87,7 +87,7 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
         }
         
         let uiImage = UIImage(cgImage: imageRef)
-        imageList.append(uiImage)
+//        imageList.append(uiImage)
         
         let visionImage = VisionImage(image: uiImage)
         
@@ -133,49 +133,14 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
 //        print("No Pose Results Array : Looks Like it's Asynchronos")
 //    }
     
-    let returnData = Data(imageList: imageList, poseResults: poseResultsArray)
+//    let returnData = Data(imageList: imageList, poseResults: poseResultsArray)
+    let returnData = Data(imageList: [], poseResults: poseResultsArray)
     return returnData
-//
-//    for (frame, image) in imageList.enumerated() {
-//        let currentImage = image
-//        let currentJoints = Array(poseResultsArray[frame].values)
-//        let currentLines = linesArray[frame]
-//        
-//        let canvas = canvas(size: frameSize)
-//        var resultImage = canvas.draw_dots(image: currentImage, dots: currentJoints)
-//        resultImage = canvas.draw_lines(image: resultImage, lines: currentLines)
-//        
-//        imageList[frame] = resultImage
-//    }
-    
-    // if !isLineQualified {
-    //     return nil
-    // }
-    
 //    let resultNodes = poseEstimator.detectPoses(images: vImageList)
 //    print(resultNodes)
     
 //    print(resultNodes![0])
 
-//    let tempDir = NSTemporaryDirectory()
-//    let tempURL = URL(fileURLWithPath: tempDir).appendingPathComponent("gaitstudio_resultvideo.mp4")
-//    var isSuccess = false
-//    
-//    createVideo(from: imageList, outputUrl: tempURL) { success in
-//        if success {
-//            print("Video created successfully.")
-//            isSuccess = true
-//        } else {
-//            print("Failed to create video.")
-//        }
-//    }
-//    
-//    if isSuccess {
-//        return tempURL
-//    }
-//    else {
-//        return nil
-//    }
 }
 
 //class VideoAnalyzer{
