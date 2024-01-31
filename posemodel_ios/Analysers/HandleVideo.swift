@@ -43,27 +43,6 @@ func GetFrames_fromVideo(url: URL) async -> Int?{
     
     return nFrames
 }
-//
-//func testImageGenerator(url: URL) -> UIImage? {
-//    let asset = AVURLAsset(url: url)
-//    let assetIG = AVAssetImageGenerator(asset: asset)
-//    assetIG.appliesPreferredTrackTransform = true
-//    assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
-//    
-//    let cmTime = CMTime(value: 90, timescale: 30)
-//    let imageRef: CGImage
-//    
-//    do {
-//        imageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
-//    } catch let error {
-//        print(error)
-//        return nil
-//    }
-//    
-//    let uiImage = UIImage(cgImage: imageRef)
-//    
-//    return uiImage
-//}
 
 func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
     let poseEstimator = PoseEstimator()
@@ -126,43 +105,7 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
             }
         }
     }
-//    
-//    let postProcessor = PostProcessor()
-//    
-//    if poseResultsArray.isEmpty {
-//        print("No Pose Results Array : Looks Like it's Asynchronos")
-//    }
-    
-//    let returnData = Data(imageList: imageList, poseResults: poseResultsArray)
     let returnData = Data(imageList: [], poseResults: poseResultsArray)
-    return returnData
-//    let resultNodes = poseEstimator.detectPoses(images: vImageList)
-//    print(resultNodes)
     
-//    print(resultNodes![0])
-
+    return returnData
 }
-
-//class VideoAnalyzer{
-//    private var asset: AVAsset
-//    private var reader: AVAssetReader
-//    var imageList: [UIImage]
-//    
-//    /// Status Index
-//    /// 0   Initailized
-//    /// 1   Analyzing
-//    /// 2   Analyzed
-//    /// 3   Analyzing Failed
-//    /// 4   Other(Unexpected)
-//    var status = 0
-//    
-//    init(url: URL){
-//        do {
-//            self.asset = AVURLAsset(url: url)
-//            self.reader = try AVAssetReader(asset: asset)
-//            self.imageList = []
-//        } catch let error {
-//            fatalError("Initializing Error: \(error)")
-//        }
-//    }
-//}
