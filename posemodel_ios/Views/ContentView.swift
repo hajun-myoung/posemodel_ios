@@ -16,7 +16,6 @@ var vImage: VisionImage? = nil
 var poseResults:[String:CGPoint] = [:]
 var countedFrames: Int? = 0
 let videoURL = Bundle.main.url(forResource: "testvideo", withExtension: "mp4")!
-var resultData: Data? = nil
 
 struct ContentView: View {
     @State var isVisionImageConverted: Bool = false
@@ -33,6 +32,7 @@ struct ContentView: View {
     // After Run the Pose Model
     @State private var poseResultData: Data? = nil
     @State private var newImageList: [UIImage] = []
+    @State private var resultData: Data? = nil
     
     var body: some View {
         ScrollView{
@@ -75,39 +75,49 @@ struct ContentView: View {
                 })
                 .padding()
                 
-                Button {
-                    let imageList: [UIImage] = resultData?.imageList ?? []
-                    let jointDict: [[String:CGPoint]] = resultData?.poseResults ?? []
-                    
-                    var frameSize = CGSize(width: 1920, height: 1080)
-                    if !imageList.isEmpty {
-                        frameSize = imageList[0].size
-                    }
-                    
-                    let canvas = Canvas(size: frameSize)
-                    let postProcessor = PostProcessor()
-                    
-                    let count = imageList.count
-                    
+//                Button {
+//                    let imageList: [UIImage] = resultData?.imageList ?? []
+//                    let jointDict: [[String:CGPoint]] = resultData?.poseResults ?? []
+//                    
+//                    var frameSize = CGSize(width: 1920, height: 1080)
+//                    if !imageList.isEmpty {
+//                        frameSize = imageList[0].size
+//                    }
+//                    
+//                    let canvas = Canvas(size: frameSize)
+//                    let postProcessor = PostProcessor()
+//                    
+//                    let count = imageList.count
+//                    
                     /// Start to generate new video(pose model enabled)
-                    for i in 0 ..< count {
-                        let currentJoints = jointDict[i]
-                        let currentDots = Array(currentJoints.values)
-                        
-                        let newLine = postProcessor.getLines_fromJoints(joints: currentJoints)
-                        var newImage = canvas.draw_dots(image: imageList[i], dots: currentDots)
-                        newImage = canvas.draw_lines(image: newImage, lines: newLine)
-                        
-                        newImageList.append(newImage)
-                    }
+//                    for i in 0 ..< count {
+//                        let currentJoints = jointDict[i]
+//                        let currentDots = Array(currentJoints.values)
+//                        
+//                        let newLine = postProcessor.getLines_fromJoints(joints: currentJoints)
+//                        var newImage = canvas.draw_dots(image: imageList[i], dots: currentDots)
+//                        newImage = canvas.draw_lines(image: newImage, lines: newLine)
+//                        
+//                        newImageList.append(newImage)
+//                    }
+//                    
+//                    print("Succesfully Generate PoseModel Enabled Video")
+//                } label: {
+//                    Label("Generate Result Images' List", systemImage: "compass.drawing")
+//                        .font(.system(size: 24, weight: .bold))
+//                }
+                
+                if let resultData {
+                    let headers = [
+                        "nose", "rightElbow", "leftElbow", "leftKnee", "leftWrist", "rightToe", "rightHeel", "rightAnkle", "rightWrist", "leftShoulder", "leftHeel", "rightKnee", "leftAnkle", "rightShoulder", "leftHip", "leftToe", "rightHip"
+                    ]
                     
-                    print("Succesfully Generate PoseModel Enabled Video")
-                } label: {
-                    Label("Generate Result Images' List", systemImage: "compass.drawing")
-                        .font(.system(size: 24, weight: .bold))
+                    ShareLink(item: createCSV(for: headers, of: resultData.poseResults)) {
+                        Label("Export to CSV", systemImage: "square.and.arrow.up")
+                    }
                 }
                 
-//                
+                
 //                Button {
 //                    let tempDir = NSTemporaryDirectory()
 //                    let tempURL = URL(fileURLWithPath: tempDir).appendingPathComponent("gaitstudio_resultvideo.mp4")

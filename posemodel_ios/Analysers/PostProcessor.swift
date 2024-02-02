@@ -75,3 +75,37 @@ class PostProcessor {
         return isQualified
     }
 }
+
+
+func createCSV(for headers: [String], of dataList: [[String:CGPoint]]) -> URL {
+    var fileURL: URL!
+    
+    let rows = dataList.map { data in
+        let values = Array(data.values)
+        let points = values.map { "\($0.x), \($0.y)" }
+        let curRow = points.joined(separator: ", ")
+        return curRow
+    }
+    
+    let rowString = rows.joined(separator: "\n")
+    let headersProcessed = headers.map { "\($0)_x, \($0)_y" }
+    var headerString = headersProcessed.joined(separator: ", ")
+    headerString = headerString + "\n"
+    
+    let stringData = headerString + rowString
+    
+//    print(stringData)
+    
+    do {
+        let path = try FileManager.default.url(for: .documentDirectory,
+                                               in: .allDomainsMask, appropriateFor: nil, create: false
+        )
+        
+        fileURL = path.appendingPathComponent("gaitstudio-data.csv")
+        try stringData.write(to: fileURL, atomically: true, encoding: .utf8)
+    } catch {
+        print("Failed to Create CSV")
+    }
+    
+    return fileURL
+}

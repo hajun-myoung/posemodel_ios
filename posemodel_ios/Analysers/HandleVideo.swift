@@ -51,23 +51,25 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
     let assetIG = AVAssetImageGenerator(asset: asset)
     assetIG.appliesPreferredTrackTransform = true
     assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
+    assetIG.requestedTimeToleranceBefore = .zero
+    assetIG.requestedTimeToleranceAfter = .zero
     
-    var imageList: [UIImage] = []
     var poseResultsArray: [[String:CGPoint]] = []
-    for currentFrame in 1..<frames + 1 {
+    for currentFrame in 0..<frames {
         let cmTime = CMTime(value: CMTimeValue(currentFrame), timescale: 30)
         let imageRef: CGImage
         
         do {
-            imageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
-        } catch let error {
-            print(error)
-            return nil
+            (imageRef, _) = try await assetIG.image(at: cmTime)
+        } catch {
+            print("[WARN]\tAssetIG.image method error: cannot open error")
+            print("\t\tFrames: \(currentFrame)")
+            continue
         }
         
+        print("[INFO]\tAnalysing Frame Number: #\(currentFrame)")
         let uiImage = UIImage(cgImage: imageRef)
 //        imageList.append(uiImage)
-        
         let visionImage = VisionImage(image: uiImage)
         
         poseEstimator.detectPose(image: visionImage) { results in
@@ -105,7 +107,7 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
             }
         }
     }
-    let returnData = Data(imageList: [], poseResults: poseResultsArray)
     
+    let returnData = Data(imageList: [], poseResults: poseResultsArray)
     return returnData
 }
