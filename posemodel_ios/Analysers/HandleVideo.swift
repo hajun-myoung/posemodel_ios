@@ -16,6 +16,30 @@ struct Data {
     var poseResults: [[String:CGPoint]]
 }
 
+func URL_to_uiimageList(of url: URL, in endOfFrame: Int) async -> [UIImage] {
+    let asset = AVURLAsset(url: url)
+    let assetIG = AVAssetImageGenerator(asset: asset)
+    assetIG.appliesPreferredTrackTransform = true
+    assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
+    assetIG.requestedTimeToleranceBefore = .zero
+    assetIG.requestedTimeToleranceAfter = .zero
+    
+    var uiimages: [UIImage] = []
+    for frame in 0..<endOfFrame {
+        do
+        {
+            let cmTime = CMTime(value: CMTimeValue(frame), timescale: 30)
+            let (image, _) = try await assetIG.image(at: cmTime)
+            uiimages.append(UIImage(cgImage: image))
+        } catch {
+            print("Converting Error")
+            continue
+        }
+    }
+    
+    return uiimages
+}
+
 func GetFrames_fromVideo(url: URL) async -> Int?{
     let asset = AVURLAsset(url: url)
     var nFrames = 0
@@ -44,7 +68,7 @@ func GetFrames_fromVideo(url: URL) async -> Int?{
     return nFrames
 }
 
-func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
+func AnalyseVideo(url: URL, frames: Int = -1) async -> [[String:CGPoint]]?{
     let poseEstimator = PoseEstimator()
 
     let asset = AVURLAsset(url: url)
@@ -108,6 +132,5 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> Data?{
         }
     }
     
-    let returnData = Data(imageList: [], poseResults: poseResultsArray)
-    return returnData
+    return poseResultsArray
 }
