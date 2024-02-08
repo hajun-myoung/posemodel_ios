@@ -37,11 +37,11 @@ func createVideo(from images: [UIImage], outputUrl: URL, completion: @escaping (
 //    }
     
     var CVPixelBuffers: [CVPixelBuffer] = []
-    for image in images {
-//        print(image)
+    for (index, image) in images.enumerated() {
         guard let buffer = buffer(from: image) else {
             print("Failed to convert UIImage to CVPB")
-            return
+            print(index, image)
+            continue
         }
 //        print(buffer)
         CVPixelBuffers.append(buffer)
@@ -86,8 +86,6 @@ func createVideo(from images: [UIImage], outputUrl: URL, completion: @escaping (
             assetWriterAdapter.append(CVPixelBuffers[frameCount], withPresentationTime: frameTime)
             frameCount += 1
             print("Video Processing...\(frameCount)")
-        } else {
-            print("Not Ready ... \(frameCount)")
         }
     }
     

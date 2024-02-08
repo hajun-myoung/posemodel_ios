@@ -16,7 +16,9 @@ struct Data {
     var poseResults: [[String:CGPoint]]
 }
 
+
 func URL_to_uiimageList(of url: URL, in endOfFrame: Int) async -> [UIImage] {
+    print("Start to convert video -> [UIImage]: \(url), \(endOfFrame)")
     let asset = AVURLAsset(url: url)
     let assetIG = AVAssetImageGenerator(asset: asset)
     assetIG.appliesPreferredTrackTransform = true
@@ -30,9 +32,10 @@ func URL_to_uiimageList(of url: URL, in endOfFrame: Int) async -> [UIImage] {
         {
             let cmTime = CMTime(value: CMTimeValue(frame), timescale: 30)
             let (image, _) = try await assetIG.image(at: cmTime)
-            uiimages.append(UIImage(cgImage: image))
-        } catch {
-            print("Converting Error")
+            let uiimage = UIImage(cgImage: image)
+            uiimages.append(uiimage)
+        } catch let error {
+            print("Converting Error: \(error)")
             continue
         }
     }

@@ -16,7 +16,8 @@ var poseDetector: PoseEstimator? = nil
 var vImage: VisionImage? = nil
 var poseResults:[String:CGPoint] = [:]
 var countedFrames: Int? = 0
-let videoURL = Bundle.main.url(forResource: "testvideo2", withExtension: "mp4")!
+//let videoURL = Bundle.main.url(forResource: "IMG_0460", withExtension: "mov")!
+let videoURL = Bundle.main.url(forResource: "testvideo", withExtension: "mp4")!
 
 struct ContentView: View {
     @State var isVisionImageConverted: Bool = false
@@ -41,7 +42,7 @@ struct ContentView: View {
     var body: some View {
         ScrollView{
             VStack {
-                Text("Ver. Jan17.1807")
+                Text("Ver. Feb6.1637")
                     .font(.system(size: 12, design: .serif))
                     .underline()
 
@@ -94,9 +95,8 @@ struct ContentView: View {
                 Button(action:{
                     Task {
                         var imageList: [UIImage] = []
-                        
                         imageList = await URL_to_uiimageList(of: videoURL, in: countedFrames!)
-                        
+
                         let jointDict: [[String:CGPoint]] = resultData ?? []
                         
                         var frameSize:CGSize = CGSize(width: 1920, height: 1080)
@@ -105,26 +105,40 @@ struct ContentView: View {
                             print("Set Frame Size as: \(frameSize)")
                         }
                         
-                        let canvas = Canvas(size: frameSize)
                         let postProcessor = PostProcessor()
                         
                         let count = imageList.count
                         
                         // Start to generate new video(pose model enabled)
                         for i in 0 ..< count {
+                            let canvas = Canvas(size: frameSize)
+//                            let currentJoints: [String:CGPoint] = jointDict[i]
                             let currentJoints: [String:CGPoint] = jointDict[i]
-                            let currentDots = Array(currentJoints.values)
                             
-                            let newLine = postProcessor.getLines_fromJoints(joints: currentJoints)
-                            var newImage = canvas.draw_dots(image: imageList[i], dots: currentDots)
-                            newImage = canvas.draw_lines(image: newImage, lines: newLine)
-                            
-                            newImageList.append(newImage)
-                            
-                            print("Image Processed: #\(i)")
+                            if currentJoints.isEmpty {
+                                newImageList.append(imageList[i])
+                                print("Image Processed /wo Pose: #\(i)")
+                            } else {
+                                let currentDots = Array(currentJoints.values)
+                                
+//                                print("image size: ", imageList[i].size.width, imageList[i].size.height)
+                                let newLine = postProcessor.getLines_fromJoints(joints: currentJoints)
+                                var newImage = canvas.draw_dots(image: imageList[i], dots: currentDots)
+//                                print(newImage)
+//                                newImage = canvas.draw_lines(image: newImage!, lines: newLine)
+//                                print(newImage)
+                                newImageList.append(newImage)
+                                
+                                if newImage.size == CGSize(width: 0, height: 0) {
+                                    print("Image Error: #\(i)")
+                                } else {
+                                    print("Image Processed: #\(i)")
+                                }
+                            }
                         }
                         
                         print("Succesfully Generate PoseModel Enabled Video")
+                        print("Video Frames: \(newImageList.count)")
                     }
                 }
                 ,label: {
