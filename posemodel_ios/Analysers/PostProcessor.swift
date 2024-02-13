@@ -97,8 +97,8 @@ func createCSV(for headers: [String], of dataList: [[String:CGPoint]]) -> URL {
 //    print(stringData)
     
     do {
-        let path = try FileManager.default.url(for: .documentDirectory,
-                                               in: .allDomainsMask, appropriateFor: nil, create: false
+        let path = try FileManager.default.url(
+            for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: false
         )
         
         fileURL = path.appendingPathComponent("gaitstudio-data.csv")

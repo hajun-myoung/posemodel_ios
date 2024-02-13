@@ -3,4 +3,129 @@
    uuid = "DD5E72A1-FACF-483C-8117-77B51AA4BA37"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6C4B2DC6-A451-43C4-AF27-0581C417FB32"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "posemodel_ios/Views/ContentView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "ContentView"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "6C4B2DC6-A451-43C4-AF27-0581C417FB32 - 659e731e74227c55"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of posemodel_ios.ContentView.isModelLoaded : Swift.Bool"
+                  moduleName = "posemodel_ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hajun/Documents/workspaces/ait-workspaces/gaitstudio/posemodel_ios/posemodel_ios/Views/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "6C4B2DC6-A451-43C4-AF27-0581C417FB32 - 8f9bbdbf9a8139bf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posemodel_ios.ContentView.isModelLoaded.getter : Swift.Bool"
+                  moduleName = "posemodel_ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hajun/Documents/workspaces/ait-workspaces/gaitstudio/posemodel_ios/posemodel_ios/Views/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "6C4B2DC6-A451-43C4-AF27-0581C417FB32 - 316dd38d21dc642e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posemodel_ios.ContentView.isModelLoaded.setter : Swift.Bool"
+                  moduleName = "posemodel_ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hajun/Documents/workspaces/ait-workspaces/gaitstudio/posemodel_ios/posemodel_ios/Views/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "6C4B2DC6-A451-43C4-AF27-0581C417FB32 - 5e06641fc2215a39"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posemodel_ios.ContentView.isModelLoaded.modify : Swift.Bool"
+                  moduleName = "posemodel_ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hajun/Documents/workspaces/ait-workspaces/gaitstudio/posemodel_ios/posemodel_ios/Views/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "6C4B2DC6-A451-43C4-AF27-0581C417FB32 - f83527e0c0fc65b9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posemodel_ios.ContentView.isModelLoaded.modify : Swift.Bool with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "posemodel_ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hajun/Documents/workspaces/ait-workspaces/gaitstudio/posemodel_ios/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "6C4B2DC6-A451-43C4-AF27-0581C417FB32 - 7873b6d9132ca566"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "posemodel_ios.ContentView.$isModelLoaded.getter : SwiftUI.Binding&lt;Swift.Bool&gt;"
+                  moduleName = "posemodel_ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hajun/Documents/workspaces/ait-workspaces/gaitstudio/posemodel_ios/posemodel_ios/Views/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "6C4B2DC6-A451-43C4-AF27-0581C417FB32 - 78482a9d706d7276"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 1 of posemodel_ios.ContentView.init(isVisionImageConverted: Swift.Bool, isModelLoaded: Swift.Bool) -&gt; posemodel_ios.ContentView"
+                  moduleName = "posemodel_ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hajun/Documents/workspaces/ait-workspaces/gaitstudio/posemodel_ios/posemodel_ios/Views/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

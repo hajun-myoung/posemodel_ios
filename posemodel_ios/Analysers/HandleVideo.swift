@@ -71,7 +71,14 @@ func GetFrames_fromVideo(url: URL) async -> Int?{
     return nFrames
 }
 
-func AnalyseVideo(filename: String, url: URL, frames: Int = -1) async -> [[String:CGPoint]]?{
+class VideoAnalysisProgress: ObservableObject {
+    @Published var progress: Double = 0.0
+}
+
+func AnalyseVideo(
+    filename: String, url: URL, frames: Int = -1,
+    progress: VideoAnalysisProgress
+) async -> [[String:CGPoint]]?{
     let poseEstimator = PoseEstimator()
 
     let asset = AVURLAsset(url: url)
@@ -114,6 +121,9 @@ func AnalyseVideo(filename: String, url: URL, frames: Int = -1) async -> [[Strin
         }
         
         print("[INFO]\tAnalysing Frame Number: #\(currentFrame)")
+        DispatchQueue.main.async {
+            progress.progress = Double(currentFrame) / Double(frames)
+        }
         let uiImage = UIImage(cgImage: imageRef)
         
         // MARK: Saving Frames to use after steps
