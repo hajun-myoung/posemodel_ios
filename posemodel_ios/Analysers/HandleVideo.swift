@@ -11,7 +11,7 @@ import AVFoundation
 import MLKitVision
 import MLKitPoseDetectionAccurate
 
-struct Data {
+struct PoseData {
     var imageList: [UIImage]
     var poseResults: [[String:CGPoint]]
 }
@@ -71,7 +71,7 @@ func GetFrames_fromVideo(url: URL) async -> Int?{
     return nFrames
 }
 
-func AnalyseVideo(url: URL, frames: Int = -1) async -> [[String:CGPoint]]?{
+func AnalyseVideo(filename: String, url: URL, frames: Int = -1) async -> [[String:CGPoint]]?{
     let poseEstimator = PoseEstimator()
 
     let asset = AVURLAsset(url: url)
@@ -80,6 +80,25 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> [[String:CGPoint]]?{
     assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
     assetIG.requestedTimeToleranceBefore = .zero
     assetIG.requestedTimeToleranceAfter = .zero
+    
+    let filemanager = FileManager.default
+    let videoDirectory = filemanager.temporaryDirectory.appending(path: filename)
+    let pathComponent = videoDirectory.path
+    let isVideoDirectoryExists = filemanager.fileExists(atPath: pathComponent)
+    
+    if isVideoDirectoryExists {
+        do {
+            try filemanager.removeItem(at: videoDirectory)
+        } catch let error {
+            print(error)
+        }
+    }
+    
+    do {
+        try filemanager.createDirectory(atPath: pathComponent, withIntermediateDirectories: false)
+    } catch let error {
+        print(error)
+    }
     
     var poseResultsArray: [[String:CGPoint]] = []
     for currentFrame in 0..<frames {
@@ -96,6 +115,17 @@ func AnalyseVideo(url: URL, frames: Int = -1) async -> [[String:CGPoint]]?{
         
         print("[INFO]\tAnalysing Frame Number: #\(currentFrame)")
         let uiImage = UIImage(cgImage: imageRef)
+        
+        // MARK: Saving Frames to use after steps
+        if let data = uiImage.pngData() {
+            let imageFilename = videoDirectory.appending(path: "\(currentFrame).png")
+            do {
+                try data.write(to: imageFilename)
+            } catch let error {
+                print(error)
+            }
+        }
+        
 //        imageList.append(uiImage)
         let visionImage = VisionImage(image: uiImage)
         

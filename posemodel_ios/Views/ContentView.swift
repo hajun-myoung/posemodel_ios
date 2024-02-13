@@ -16,8 +16,11 @@ var poseDetector: PoseEstimator? = nil
 var vImage: VisionImage? = nil
 var poseResults:[String:CGPoint] = [:]
 var countedFrames: Int? = 0
-//let videoURL = Bundle.main.url(forResource: "IMG_0460", withExtension: "mov")!
-let videoURL = Bundle.main.url(forResource: "testvideo", withExtension: "mp4")!
+
+let videoFilename = "IMG_0460"
+let videoExtension = "mov"
+//let videoFilename = "testvideo"
+let videoURL = Bundle.main.url(forResource: videoFilename, withExtension: videoExtension)!
 
 struct ContentView: View {
     @State var isVisionImageConverted: Bool = false
@@ -32,7 +35,7 @@ struct ContentView: View {
     @State private var IGTestingImage: UIImage? = nil
     
     // After Run the Pose Model
-    @State private var poseResultData: Data? = nil
+    @State private var poseResultData: PoseData? = nil
     @State private var newImageList: [UIImage] = []
     @State private var resultData: [[String:CGPoint]]? = nil
     
@@ -67,7 +70,7 @@ struct ContentView: View {
                 
                 Button(action: {
                     Task {
-                        resultData = await AnalyseVideo(url: videoURL, frames: countedFrames!)
+                        resultData = await AnalyseVideo(filename: videoFilename, url: videoURL, frames: countedFrames!)
                         if resultData != nil {
                             print("Video Has Been Analyzed")
                         } else {
@@ -94,51 +97,59 @@ struct ContentView: View {
                 
                 Button(action:{
                     Task {
-                        var imageList: [UIImage] = []
-                        imageList = await URL_to_uiimageList(of: videoURL, in: countedFrames!)
-
+                        var imageList: [String] = []
+//                        imageList = await URL_to_uiimageList(of: videoURL, in: countedFrames!)
                         let jointDict: [[String:CGPoint]] = resultData ?? []
-                        
-                        var frameSize:CGSize = CGSize(width: 1920, height: 1080)
-                        if !imageList.isEmpty {
-                            frameSize = imageList[0].size
-                            print("Set Frame Size as: \(frameSize)")
-                        }
-                        
                         let postProcessor = PostProcessor()
+                        
+                        let filemanager = FileManager.default
+                        let videoDirectory = filemanager.temporaryDirectory.appending(path: videoFilename)
+                        let pathComponent = videoDirectory.path
+                        
+                        do {
+                            imageList = try filemanager.contentsOfDirectory(atPath: pathComponent)
+                        } catch let error {
+                            print(error)
+                        }
                         
                         let count = imageList.count
                         
                         // Start to generate new video(pose model enabled)
-                        for i in 0 ..< count {
-                            let canvas = Canvas(size: frameSize)
+                        for imageName in imageList {
+                            print(imageName)
+//                            let canvas = Canvas(size: frameSize)
 //                            let currentJoints: [String:CGPoint] = jointDict[i]
-                            let currentJoints: [String:CGPoint] = jointDict[i]
+                            let currentImageURL = videoDirectory.appending(path: imageName)
+                            var currentImageData: Data? = try Data(contentsOf: currentImageURL)
+                            var currentImage: UIImage? = UIImage(data: currentImageData!)!
+                            let index = Int(imageName.components(separatedBy: ".")[0])
                             
-                            if currentJoints.isEmpty {
-                                newImageList.append(imageList[i])
-                                print("Image Processed /wo Pose: #\(i)")
+                            var currentJoints: [String:CGPoint] = [:]
+                            if index! > resultData!.count {
+                                print("No Joints")
                             } else {
+                                currentJoints = resultData![index!]
                                 let currentDots = Array(currentJoints.values)
+                                let currentLines = postProcessor.getLines_fromJoints(joints: currentJoints)
                                 
-//                                print("image size: ", imageList[i].size.width, imageList[i].size.height)
-                                let newLine = postProcessor.getLines_fromJoints(joints: currentJoints)
-                                var newImage = canvas.draw_dots(image: imageList[i], dots: currentDots)
-//                                print(newImage)
+                                draw_dots(image: currentImage!, dots: currentDots, index: index!)
+
 //                                newImage = canvas.draw_lines(image: newImage!, lines: newLine)
 //                                print(newImage)
-                                newImageList.append(newImage)
+//                                newImageList.append(newImage)
                                 
-                                if newImage.size == CGSize(width: 0, height: 0) {
-                                    print("Image Error: #\(i)")
-                                } else {
-                                    print("Image Processed: #\(i)")
-                                }
+//                                if newImage.size == CGSize(width: 0, height: 0) {
+//                                    print("Image Error: #\(String(describing: index))")
+//                                } else {
+//                                    print("Image Processed: #\(String(describing: index))")
+//                                }
                             }
+                            
+                            
                         }
                         
+//                        imageList = []
                         print("Succesfully Generate PoseModel Enabled Video")
-                        print("Video Frames: \(newImageList.count)")
                     }
                 }
                 ,label: {
@@ -170,6 +181,8 @@ struct ContentView: View {
                                     print("Failed to create video.")
                                 }
                             }
+                            
+                            newImageList = []
                         } catch {
                             print("Button Error")
                         }
