@@ -1,7 +1,8 @@
 import UIKit
 import AVFoundation
+import Foundation
 
-func createVideo(from images: [UIImage], outputUrl: URL, completion: @escaping (Bool) -> Void) async {
+func createVideo(from images: [String], outputUrl: URL, completion: @escaping (Bool) -> Void) async {
 //    let settings = [AVVideoCodecKey: AVVideoCodecType.h264,
 //                    AVVideoWidthKey: NSNumber(value: Float(1920)),
 //                   AVVideoHeightKey: NSNumber(value: Float(1080))] as [String : Any]
@@ -35,19 +36,32 @@ func createVideo(from images: [UIImage], outputUrl: URL, completion: @escaping (
 //            completion(writer.status == .completed)
 //        }
 //    }
+    let filemanager = FileManager.default
+    let videoDirectory = filemanager.temporaryDirectory.appending(path: videoFilename)
+    let pathComponent = videoDirectory.path
+    
+    var frameSize: CGSize = CGSize(width: 1920, height: 1080)
     
     var CVPixelBuffers: [CVPixelBuffer] = []
     for (index, image) in images.enumerated() {
-        guard let buffer = buffer(from: image) else {
-            print("Failed to convert UIImage to CVPB")
-            print(index, image)
-            continue
+        let currentURL = videoDirectory.appending(path: image)
+        var uiimage: UIImage
+        do {
+            let imageData = try Data(contentsOf: currentURL)
+            uiimage = UIImage(data: imageData) ?? UIImage()
+            frameSize = uiimage.size
+            
+            guard let buffer = buffer(from: uiimage) else {
+                print("Failed to convert UIImage to CVPB")
+                print(index, image)
+                continue
+            }
+            
+            CVPixelBuffers.append(buffer)
+        } catch let error {
+            print(error)
         }
-//        print(buffer)
-        CVPixelBuffers.append(buffer)
     }
-    
-    let frameSize = images[0].size
     
     let assetWriterSettings = [
         AVVideoCodecKey: AVVideoCodecType.h264,

@@ -177,19 +177,26 @@ struct ContentView: View {
                                 print("Result Video URL: \(resultVideoURL)")
                                 print("Files: ", analyzedImagesName)
                             }
-//                            
-//                            await createVideo(
-//                                from: newImageList, outputUrl: resultVideoURL
-//                            ) { success in
-//                                if success {
-//                                    print("Video created successfully.")
-//                                    isSuccess = true
-//                                } else {
-//                                    print("Failed to create video.")
-//                                }
-//                            }
+                            
+                            await createVideo(
+                                from: analyzedImagesName, outputUrl: resultVideoURL
+                            ) { success in
+                                if success {
+                                    print("Video created successfully.")
+                                    isSuccess = true
+                                } else {
+                                    print("Failed to create video.")
+                                }
+                            }
                         } catch {
                             print("Button Error")
+                        }
+                        
+                        do {
+                            try filemanager.removeItem(at: filemanager.temporaryDirectory)
+                            print("Temp Dir Has Been Cleared")
+                        } catch let error {
+                            print(error)
                         }
                     }
                 }, label: {
@@ -208,7 +215,8 @@ struct ContentView: View {
                     )
                     .aspectRatio(contentMode: .fit)
                 }
-
+                
+                
                 
                 // TODO: Export the Array of UIImage to a Video
                 // TODO: Stack the analyzed frames to an Array of UIImage
