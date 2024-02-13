@@ -98,7 +98,6 @@ struct ContentView: View {
                 Button(action:{
                     Task {
                         var imageList: [String] = []
-//                        imageList = await URL_to_uiimageList(of: videoURL, in: countedFrames!)
                         let jointDict: [[String:CGPoint]] = resultData ?? []
                         let postProcessor = PostProcessor()
                         
@@ -115,10 +114,9 @@ struct ContentView: View {
                         let count = imageList.count
                         
                         // Start to generate new video(pose model enabled)
+                        var progress = 0
                         for imageName in imageList {
-                            print(imageName)
-//                            let canvas = Canvas(size: frameSize)
-//                            let currentJoints: [String:CGPoint] = jointDict[i]
+                            print(Double(round(Double(progress / count * 10000))) / 100, "%")
                             let currentImageURL = videoDirectory.appending(path: imageName)
                             var currentImageData: Data? = try Data(contentsOf: currentImageURL)
                             var currentImage: UIImage? = UIImage(data: currentImageData!)!
@@ -132,23 +130,11 @@ struct ContentView: View {
                                 let currentDots = Array(currentJoints.values)
                                 let currentLines = postProcessor.getLines_fromJoints(joints: currentJoints)
                                 
-                                draw_dots(image: currentImage!, dots: currentDots, index: index!)
-
-//                                newImage = canvas.draw_lines(image: newImage!, lines: newLine)
-//                                print(newImage)
-//                                newImageList.append(newImage)
-                                
-//                                if newImage.size == CGSize(width: 0, height: 0) {
-//                                    print("Image Error: #\(String(describing: index))")
-//                                } else {
-//                                    print("Image Processed: #\(String(describing: index))")
-//                                }
+                                draw_pose(image: currentImage!, dots: currentDots, lines: currentLines, index: index!)
                             }
                             
-                            
+                            progress += 1
                         }
-                        
-//                        imageList = []
                         print("Succesfully Generate PoseModel Enabled Video")
                     }
                 }
@@ -160,8 +146,26 @@ struct ContentView: View {
                 
                 Button (action: {
                     Task {
+                        let filemanager = FileManager.default
+                        let videoDirectory = filemanager.temporaryDirectory.appending(path: videoFilename)
+                        let pathComponent = videoDirectory.path
+                        
+                        var analyzedImagesName: [String] = []
                         do {
-                            let path = try FileManager.default.url(
+                            let files: [String] = try filemanager.contentsOfDirectory(atPath: pathComponent)
+                            for curFile in files {
+                                if curFile.starts(with: "pose_") {
+                                    analyzedImagesName.append(curFile)
+                                }
+                            }
+                            
+                            analyzedImagesName.sort()
+                        } catch let error {
+                            print(error)
+                        }
+
+                        do {
+                            let path = try filemanager.url(
                                 for: .documentDirectory,
                                 in: .allDomainsMask,
                                 appropriateFor: nil,
@@ -169,20 +173,21 @@ struct ContentView: View {
                             )
                             
                             resultVideoURL = path.appendingPathComponent("gait-result.mp4")
-                            print("New Result Video URL: \(resultVideoURL)")
-                            
-                            await createVideo(
-                                from: newImageList, outputUrl: resultVideoURL
-                            ) { success in
-                                if success {
-                                    print("Video created successfully.")
-                                    isSuccess = true
-                                } else {
-                                    print("Failed to create video.")
-                                }
+                            if let resultVideoURL {
+                                print("Result Video URL: \(resultVideoURL)")
+                                print("Files: ", analyzedImagesName)
                             }
-                            
-                            newImageList = []
+//                            
+//                            await createVideo(
+//                                from: newImageList, outputUrl: resultVideoURL
+//                            ) { success in
+//                                if success {
+//                                    print("Video created successfully.")
+//                                    isSuccess = true
+//                                } else {
+//                                    print("Failed to create video.")
+//                                }
+//                            }
                         } catch {
                             print("Button Error")
                         }
