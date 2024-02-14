@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 
-func draw_pose(image: UIImage, dots: [CGPoint], lines: [Line], radius:CGFloat = 5, index:Int? = -1){
+func draw_pose(
+    image: UIImage, dots: [CGPoint], lines: [Line], radius:CGFloat = 5, index:Int? = -1
+){
     defer {
         UIGraphicsEndImageContext()
     }
@@ -89,9 +91,42 @@ func draw_pose(image: UIImage, dots: [CGPoint], lines: [Line], radius:CGFloat = 
         }
     }
 
-    if let index {
-        print(index, "done")
-    }
+//    if let index {
+//        print(index, "done")
+//    }
     
     return
 }
+
+func drawing_main(
+    imageList: [String], videoDirectory: URL, resultData: [[String:CGPoint]]
+) {
+    let postProcessor = PostProcessor()
+    for imageName in imageList {
+        let currentImageURL = videoDirectory.appending(path: imageName)
+        
+        var currentImageData: Data
+        do {
+            currentImageData = try Data(contentsOf: currentImageURL)
+            
+            let currentImage: UIImage? = UIImage(data: currentImageData)!
+            let index = Int(imageName.components(separatedBy: ".")[0])
+
+            var currentJoints: [String:CGPoint] = [:]
+            if index! > resultData.count {
+                print("No Joints")
+            } else {
+                currentJoints = resultData[index!]
+                let currentDots = Array(currentJoints.values)
+                let currentLines = postProcessor.getLines_fromJoints(joints: currentJoints)
+
+                draw_pose(
+                    image: currentImage!, dots: currentDots, lines: currentLines, index: index!
+                )
+            }
+        } catch let error {
+            print(error)
+        }
+    }
+}
+

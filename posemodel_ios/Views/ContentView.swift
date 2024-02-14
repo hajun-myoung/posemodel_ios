@@ -41,7 +41,7 @@ struct ContentView: View {
     
     @State private var statusText = "Analyzing Not Started"
     @StateObject var videoProgress = VideoAnalysisProgress()
-    @State private var statusBoolCode: Bool = false
+    @State private var statusCode: Int = 0
 
     var body: some View {
         ScrollView{
@@ -70,12 +70,12 @@ struct ContentView: View {
                         countedFrames = await GetFrames_fromVideo(url: videoURL)
                         
                         statusText = "Analayzing..."
-                        statusBoolCode = true
+                        statusCode = 1
                         resultData = await AnalyseVideo(
                             filename: videoFilename, url: videoURL, frames: countedFrames!,
                             progress: videoProgress
                         )
-                        statusBoolCode = false
+                        statusCode = 0
                         
                         if resultData != nil {
                             statusText = "Video Has Been Analyzed"
@@ -83,23 +83,102 @@ struct ContentView: View {
                             statusText = "No Result Data by Analyse Video Async Function"
                             return
                         }
+                        
+                        statusText = "Getting Directory Structure"
+                        /// Drawing Poses
+                        var imageList: [String] = []
+
+                        let filemanager = FileManager.default
+                        let videoDirectory = filemanager.temporaryDirectory.appending(path: videoFilename)
+                        let pathComponent = videoDirectory.path
+
+                        do {
+                            imageList = try filemanager.contentsOfDirectory(atPath: pathComponent)
+                        } catch let error {
+                            print(error)
+                        }
+
+
+                        // Start to generate new video(pose model enabled)
+                        statusText = "Drawing Poses..."
+                        videoProgress.progress = 0.0
+                        drawing_main(
+                            imageList: imageList, videoDirectory: videoDirectory,
+                            resultData: resultData!
+                        )
+                        
+                        var analyzedImagesName: [String] = []
+                        do {
+                            let files: [String] = try filemanager.contentsOfDirectory(atPath: pathComponent)
+                            for curFile in files {
+                                if curFile.starts(with: "pose_") {
+                                    analyzedImagesName.append(curFile)
+                                }
+                            }
+
+                            analyzedImagesName.sort()
+                        } catch let error {
+                            print(error)
+                        }
+
+                        do {
+                            let path = try filemanager.url(
+                                for: .documentDirectory,
+                                in: .allDomainsMask,
+                                appropriateFor: nil,
+                                create: false
+                            )
+
+                            resultVideoURL = path.appendingPathComponent("\(videoFilename)_analyzed.mp4")
+                            if let resultVideoURL {
+                                print("Result Video URL: \(resultVideoURL)")
+                                print("Files: ", analyzedImagesName)
+                            }
+
+                            await createVideo(
+                                from: analyzedImagesName, outputUrl: resultVideoURL
+                            ) { success in
+                                if success {
+                                    print("Video created successfully.")
+                                    isSuccess = true
+                                } else {
+                                    print("Failed to create video.")
+                                }
+                            }
+                        } catch {
+                            print("Button Error")
+                        }
                     }
                 }, label: {
                     Label("Start Analyzing", systemImage: "video.fill.badge.checkmark")
                         .font(.system(size: 24, weight: .bold))
                 })
                 
-                if statusBoolCode {
+                if statusCode == 1 {
                     ProgressView(value: videoProgress.progress)
                         .padding()
+                }
+                
+                if isSuccess {
+                    Text("New Video Ready")
+                        .font(.system(size: 12, design: .serif))
+                        .underline()
+                    VideoPlayer(
+                        player: AVPlayer(
+                            url: resultVideoURL
+                        )
+                    )
+                    .aspectRatio(contentMode: .fit)
                 }
 
                 if let resultData {
                     let headers = [
                         "nose", "rightElbow", "leftElbow", "leftKnee", "leftWrist", "rightToe", "rightHeel", "rightAnkle", "rightWrist", "leftShoulder", "leftHeel", "rightKnee", "leftAnkle", "rightShoulder", "leftHip", "leftToe", "rightHip"
                     ]
+                    
+                    let csvURL = createCSV(for: headers, of: resultData, filename: videoFilename)
 
-                    ShareLink(item: createCSV(for: headers, of: resultData)) {
+                    ShareLink(item: csvURL) {
                         Label("Export to CSV", systemImage: "square.and.arrow.up")
                     }
                     .padding()
@@ -251,18 +330,6 @@ struct ContentView: View {
 //                    Label("to Video", systemImage: "video.badge.plus")
 //                        .font(.system(size: 24, weight: .bold))
 //                })
-                
-                if isSuccess {
-                    Text("New Video Ready")
-                        .font(.system(size: 12, design: .serif))
-                        .underline()
-                    VideoPlayer(
-                        player: AVPlayer(
-                            url: resultVideoURL
-                        )
-                    )
-                    .aspectRatio(contentMode: .fit)
-                }
                 
                 // TODO: Export the Array of UIImage to a Video
                 // TODO: Stack the analyzed frames to an Array of UIImage

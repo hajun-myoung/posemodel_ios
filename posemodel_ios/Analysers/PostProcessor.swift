@@ -77,7 +77,7 @@ class PostProcessor {
 }
 
 
-func createCSV(for headers: [String], of dataList: [[String:CGPoint]]) -> URL {
+func createCSV(for headers: [String], of dataList: [[String:CGPoint]], filename: String) -> URL {
     var fileURL: URL!
     
     let rows = dataList.map { data in
@@ -101,7 +101,7 @@ func createCSV(for headers: [String], of dataList: [[String:CGPoint]]) -> URL {
             for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: false
         )
         
-        fileURL = path.appendingPathComponent("gaitstudio-data.csv")
+        fileURL = path.appendingPathComponent("\(filename)_data.csv")
         try stringData.write(to: fileURL, atomically: true, encoding: .utf8)
     } catch {
         print("Failed to Create CSV")

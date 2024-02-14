@@ -112,6 +112,12 @@ func AnalyseVideo(
         let cmTime = CMTime(value: CMTimeValue(currentFrame), timescale: 30)
         let imageRef: CGImage
         
+        
+        print("[INFO]\tAnalysing Frame Number: #\(currentFrame)")
+        DispatchQueue.main.async {
+            progress.progress = Double(currentFrame + 1) / Double(frames)
+        }
+        
         do {
             (imageRef, _) = try await assetIG.image(at: cmTime)
         } catch {
@@ -120,10 +126,6 @@ func AnalyseVideo(
             continue
         }
         
-        print("[INFO]\tAnalysing Frame Number: #\(currentFrame)")
-        DispatchQueue.main.async {
-            progress.progress = Double(currentFrame) / Double(frames)
-        }
         let uiImage = UIImage(cgImage: imageRef)
         
         // MARK: Saving Frames to use after steps
