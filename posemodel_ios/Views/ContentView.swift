@@ -42,6 +42,8 @@ struct ContentView: View {
     @State private var statusText = "Analyzing Not Started"
     @StateObject var videoProgress = VideoAnalysisProgress()
     @State private var statusCode: Int = 0
+    
+    @State private var csvURL: URL? = nil
 
     var body: some View {
         ScrollView{
@@ -83,6 +85,12 @@ struct ContentView: View {
                             statusText = "No Result Data by Analyse Video Async Function"
                             return
                         }
+                        
+                        let headers = [
+                            "nose", "rightElbow", "leftElbow", "leftKnee", "leftWrist", "rightToe", "rightHeel", "rightAnkle", "rightWrist", "leftShoulder", "leftHeel", "rightKnee", "leftAnkle", "rightShoulder", "leftHip", "leftToe", "rightHip"
+                        ]
+                        
+                        csvURL = createCSV(for: headers, of: resultData!, filename: videoFilename)
                         
                         statusText = "Getting Directory Structure"
                         /// Drawing Poses
@@ -148,6 +156,9 @@ struct ContentView: View {
                         } catch {
                             print("Button Error")
                         }
+                        
+                        /// Get Paramters
+                        preprocessCoordinates(from: <#T##URL#>)
                     }
                 }, label: {
                     Label("Start Analyzing", systemImage: "video.fill.badge.checkmark")
@@ -171,13 +182,7 @@ struct ContentView: View {
                     .aspectRatio(contentMode: .fit)
                 }
 
-                if let resultData {
-                    let headers = [
-                        "nose", "rightElbow", "leftElbow", "leftKnee", "leftWrist", "rightToe", "rightHeel", "rightAnkle", "rightWrist", "leftShoulder", "leftHeel", "rightKnee", "leftAnkle", "rightShoulder", "leftHip", "leftToe", "rightHip"
-                    ]
-                    
-                    let csvURL = createCSV(for: headers, of: resultData, filename: videoFilename)
-
+                if let csvURL {
                     ShareLink(item: csvURL) {
                         Label("Export to CSV", systemImage: "square.and.arrow.up")
                     }
