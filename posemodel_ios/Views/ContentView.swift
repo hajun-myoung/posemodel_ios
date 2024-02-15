@@ -162,6 +162,9 @@ struct ContentView: View {
                         csvURL = preprocessCoordinates(from: csvURL!, filename: videoFilename)
 //                        print("THE INTERMEDIATE CSV")
 //                        print(intermediateCSV_URL)
+                        
+                        let params = calculate_parameters(of: csvURL!)
+                        print(params)
                     }
                 }, label: {
                     Label("Start Analyzing", systemImage: "video.fill.badge.checkmark")
