@@ -69,6 +69,7 @@ func getCenterPoints(_ vecA: [CGPoint], _ vecB: [CGPoint]) -> [CGPoint] {
         
         centers.append(newCenter)
     }
+    
     return centers
 }
 
@@ -87,11 +88,14 @@ func getSpeeds(of vecA: [CGPoint], on framerate: Double = 30.0, by rate: Int = 1
     for (index, point) in vecA.enumerated() {
         if index == 0 {
             lastCoordi = point.x
+            speeds.append(0)
         } else if index % rate == 0 {
             let diff = point.x - lastCoordi
             let newSpeed = diff / (dt * Double(rate))
             
             speeds.append(newSpeed)
+        } else {
+            speeds.append(0)
         }
     }
     
@@ -196,7 +200,7 @@ func getAngles_fromNodesArray(_ nodeA: [CGPoint], _ nodeB: [CGPoint], _ nodeC: [
         let vectorB = CGPoint(x: dotC.x - dotB.x, y: dotC.y - dotB.y)
         
         let newAngle = dotProduct(vectorA, vectorB, isRadian: false)
-        
+        angles.append(newAngle)
     }
     
     return angles
@@ -214,7 +218,7 @@ func getAngles_fromNodesArray(_ nodeA: [CGPoint], _ nodeB: [CGPoint], _ nodeC: [
 /// - Calculate one time per 10 frames
 /// - Bent angle: Angle between Shoulder to Waist Vector - Vertical Vector
 /// - Height: Nose to Toe average, distance
-func preprocessCoordinates(from fileURL:URL) -> URL? {
+func preprocessCoordinates(from fileURL:URL, filename: String) -> URL {
     /// Read and Validate the CSV file
     var fileDataArray: [String]!
     do {
@@ -226,7 +230,7 @@ func preprocessCoordinates(from fileURL:URL) -> URL? {
         //     print(fileDataArray)
         // }
     } catch {
-        return nil
+        fatalError("CSV Reading Failed")
     }
     
     /// CSV to Array
@@ -325,5 +329,46 @@ func preprocessCoordinates(from fileURL:URL) -> URL? {
     let centerOfHeelCoordinates = getCenterPoints(leftHeelCoordinates, rightHeelCoordinates)
     let height: [Double] = getDistances(noseCoordinates, centerOfHeelCoordinates)
     
-    return nil
+    print(leftArmAngles.count, rightArmAngles.count, leftStride.count, rightStride.count, stepLength.count, stepSpeed.count, bentAngle.count, height.count)
+    /// Write as a CSV File
+    var newFileURL: URL!
+    
+    let count = leftArmAngles.count
+    var rows:[String] = []
+    
+    for index in 0 ..< count {
+        let newRow = [
+            String(leftArmAngles[index]),
+            String(rightArmAngles[index]),
+            String(leftStride[index]),
+            String(rightStride[index]),
+            String(stepLength[index]),
+            String(stepSpeed[index]),
+            String(bentAngle[index]),
+            String(height[index])
+        ]
+        
+        let row = newRow.joined(separator: ",")
+        rows.append(row)
+    }
+    
+    let rowString = rows.joined(separator: "\n")
+    var headerString = [
+        "leftArmAngles", "rightArmAngles", "leftStride", "rightStride", "stepLength", "stepSpeed", "bentAngle", "height"
+    ].joined(separator: ",")
+    headerString = headerString + "\n"
+    
+    let stringData = headerString + rowString
+    
+    do {
+        let path = try FileManager.default.url(
+            for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: false
+        )
+        newFileURL = path.appendingPathComponent("\(filename)_intermediate_values.csv")
+        try stringData.write(to: fileURL, atomically: true, encoding: .utf8)
+    } catch {
+        print("Failed to Create CSV")
+    }
+    
+    return fileURL
 }
