@@ -111,10 +111,8 @@
 				F945AB0E2B510AA7009C2D61 /* Analysers */,
 				F945AB0A2B510010009C2D61 /* Extensions */,
 				F945AAF92B50DAF9009C2D61 /* posemodel_iosApp.swift */,
-				F94D9ED02B52852000182F09 /* Drawer.swift */,
 				F945AAFD2B50DAFB009C2D61 /* Assets.xcassets */,
 				F945AAFF2B50DAFB009C2D61 /* Preview Content */,
-				F9572D332B5140480063C0AF /* converter.swift */,
 			);
 			path = posemodel_ios;
 			sourceTree = "<group>";
@@ -130,6 +128,7 @@
 		F945AB0A2B510010009C2D61 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				F9572D332B5140480063C0AF /* converter.swift */,
 				F945AB0B2B510044009C2D61 /* UIImageExtension.swift */,
 				F94D9ECE2B5282AA00182F09 /* MathExtension.swift */,
 				F9BA6B7E2B63C03400F1CC94 /* VideoExtension.swift */,
@@ -140,6 +139,7 @@
 		F945AB0E2B510AA7009C2D61 /* Analysers */ = {
 			isa = PBXGroup;
 			children = (
+				F94D9ED02B52852000182F09 /* Drawer.swift */,
 				F945AB112B5128B8009C2D61 /* HandlePosemodel.swift */,
 				F9B937882B60D7BB0093C1CA /* HandleVideo.swift */,
 				F97BF80C2B6895AF00E73AFE /* PostProcessor.swift */,

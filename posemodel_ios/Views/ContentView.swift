@@ -43,7 +43,8 @@ struct ContentView: View {
     @StateObject var videoProgress = VideoAnalysisProgress()
     @State private var statusCode: Int = 0
     
-    @State private var csvURL: URL? = nil
+    @State private var coordinatesCSVURL: URL? = nil
+    @State private var intermediateCSVURL: URL? = nil
 
     var body: some View {
         ScrollView{
@@ -90,7 +91,7 @@ struct ContentView: View {
                             "nose", "rightElbow", "leftElbow", "leftKnee", "leftWrist", "rightToe", "rightHeel", "rightAnkle", "rightWrist", "leftShoulder", "leftHeel", "rightKnee", "leftAnkle", "rightShoulder", "leftHip", "leftToe", "rightHip"
                         ]
                         
-                        csvURL = createCSV(for: headers, of: resultData!, filename: videoFilename)
+                        coordinatesCSVURL = createCSV(for: headers, of: resultData!, filename: videoFilename)
                         
                         statusText = "Getting Directory Structure"
                         /// Drawing Poses
@@ -108,62 +109,62 @@ struct ContentView: View {
 
 
                         // Start to generate new video(pose model enabled)
-                        statusText = "Drawing Poses..."
-                        videoProgress.progress = 0.0
-                        drawing_main(
-                            imageList: imageList, videoDirectory: videoDirectory,
-                            resultData: resultData!
-                        )
-                        
-                        var analyzedImagesName: [String] = []
-                        do {
-                            let files: [String] = try filemanager.contentsOfDirectory(atPath: pathComponent)
-                            for curFile in files {
-                                if curFile.starts(with: "pose_") {
-                                    analyzedImagesName.append(curFile)
-                                }
-                            }
-
-                            analyzedImagesName.sort()
-                        } catch let error {
-                            print(error)
-                        }
-
-                        do {
-                            let path = try filemanager.url(
-                                for: .documentDirectory,
-                                in: .allDomainsMask,
-                                appropriateFor: nil,
-                                create: false
-                            )
-
-                            resultVideoURL = path.appendingPathComponent("\(videoFilename)_analyzed.mp4")
-                            if let resultVideoURL {
-                                print("Result Video URL: \(resultVideoURL)")
-                                print("Files: ", analyzedImagesName)
-                            }
-
-                            await createVideo(
-                                from: analyzedImagesName, outputUrl: resultVideoURL
-                            ) { success in
-                                if success {
-                                    print("Video created successfully.")
-                                    isSuccess = true
-                                } else {
-                                    print("Failed to create video.")
-                                }
-                            }
-                        } catch {
-                            print("Button Error")
-                        }
+//                        statusText = "Drawing Poses..."
+//                        videoProgress.progress = 0.0
+//                        drawing_main(
+//                            imageList: imageList, videoDirectory: videoDirectory,
+//                            resultData: resultData!
+//                        )
+//                        
+//                        var analyzedImagesName: [String] = []
+//                        do {
+//                            let files: [String] = try filemanager.contentsOfDirectory(atPath: pathComponent)
+//                            for curFile in files {
+//                                if curFile.starts(with: "pose_") {
+//                                    analyzedImagesName.append(curFile)
+//                                }
+//                            }
+//
+//                            analyzedImagesName.sort()
+//                        } catch let error {
+//                            print(error)
+//                        }
+//
+//                        do {
+//                            let path = try filemanager.url(
+//                                for: .documentDirectory,
+//                                in: .allDomainsMask,
+//                                appropriateFor: nil,
+//                                create: false
+//                            )
+//
+//                            resultVideoURL = path.appendingPathComponent("\(videoFilename)_analyzed.mp4")
+//                            if let resultVideoURL {
+//                                print("Result Video URL: \(resultVideoURL)")
+//                                print("Files: ", analyzedImagesName)
+//                            }
+//
+//                            await createVideo(
+//                                from: analyzedImagesName, outputUrl: resultVideoURL
+//                            ) { success in
+//                                if success {
+//                                    print("Video created successfully.")
+//                                    isSuccess = true
+//                                } else {
+//                                    print("Failed to create video.")
+//                                }
+//                            }
+//                        } catch {
+//                            print("Button Error")
+//                        }
                         
                         /// Get Paramters
-//                        let intermediateCSV_URL = preprocessCoordinates(from: csvURL!, filename: videoFilename)
-                        csvURL = preprocessCoordinates(from: csvURL!, filename: videoFilename)
+                        intermediateCSVURL = preprocessCoordinates(from: coordinatesCSVURL!, filename: videoFilename)
+//                        csvURL = preprocessCoordinates(from: csvURL!, filename: videoFilename)
 //                        print("THE INTERMEDIATE CSV")
 //                        print(intermediateCSV_URL)
                         
-                        let params = calculate_parameters(of: csvURL!)
+                        let params = calculate_parameters(of: coordinatesCSVURL!)
                         print(params)
                     }
                 }, label: {
@@ -175,21 +176,27 @@ struct ContentView: View {
                     ProgressView(value: videoProgress.progress)
                         .padding()
                 }
-                
-                if isSuccess {
-                    Text("New Video Ready")
-                        .font(.system(size: 12, design: .serif))
-                        .underline()
-                    VideoPlayer(
-                        player: AVPlayer(
-                            url: resultVideoURL
-                        )
-                    )
-                    .aspectRatio(contentMode: .fit)
-                }
+//                
+//                if isSuccess {
+//                    Text("New Video Ready")
+//                        .font(.system(size: 12, design: .serif))
+//                        .underline()
+//                    VideoPlayer(
+//                        player: AVPlayer(
+//                            url: resultVideoURL
+//                        )
+//                    )
+//                    .aspectRatio(contentMode: .fit)
+//                }
 
-                if let csvURL {
-                    ShareLink(item: csvURL) {
+                if let coordinatesCSVURL {
+                    ShareLink(item: coordinatesCSVURL) {
+                        Label("Export to CSV", systemImage: "square.and.arrow.up")
+                    }
+                    .padding()
+                }
+                if let intermediateCSVURL {
+                    ShareLink(item: intermediateCSVURL) {
                         Label("Export to CSV", systemImage: "square.and.arrow.up")
                     }
                     .padding()

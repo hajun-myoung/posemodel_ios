@@ -41,7 +41,7 @@ func getStaticAngle(of vecA: [CGPoint], vector vecB: [CGPoint], standard: CGPoin
         let newVectorY = vecB[index].y - vecA[index].y
         let newVector = CGPoint(x: newVectorX, y: newVectorY)
         
-        let newAngle = dotProduct(newVector, standard, isRadian: false)
+        let newAngle = calculateAngle(newVector, standard, isRadian: false)
         angles.append(newAngle)
     }
     
@@ -90,8 +90,9 @@ func getSpeeds(of vecA: [CGPoint], on framerate: Double = 30.0, by rate: Int = 1
             lastCoordi = point.x
             speeds.append(0)
         } else if index % rate == 0 {
-            let diff = point.x - lastCoordi
+            let diff = abs(point.x - lastCoordi)
             let newSpeed = diff / (dt * Double(rate))
+            lastCoordi = point.x
             
             speeds.append(newSpeed)
         } else {
@@ -164,13 +165,22 @@ func getDistances(_ vecA: [CGPoint], _ vecB: [CGPoint]) -> [Double] {
 ///   - vecB: another Vector
 ///   - isRadian: default true, if false, return degree
 /// - Returns: Radian angle
-func dotProduct(_ vecA: CGPoint, _ vecB: CGPoint, isRadian: Bool = true) -> Double {
-    let radianAngle = vecA.x * vecB.x + vecA.y * vecB.y
-    if isRadian {
-        return radianAngle
-    } else {
-        return radianAngle * (180 / Double.pi)
+func dotProduct(_ vecA: CGPoint, _ vecB: CGPoint) -> Double {
+    return vecA.x * vecB.x + vecA.y * vecB.y
+}
+
+extension CGPoint {
+    var size: Double {
+        let xSquared = pow(self.x, 2)
+        let ySquared = pow(self.y, 2)
+        
+        return pow(xSquared + ySquared, 0.5)
     }
+}
+
+func calculateAngle(_ vecA: CGPoint, _ vecB: CGPoint, isRadian: Bool = true) -> Double {
+    let converter = isRadian ? 1 : (180.0 / Double.pi)
+    return acos(dotProduct(vecA, vecB) / (vecA.size * vecB.size)) * converter
 }
 
 /// Calculate angles between three nodes. Angles of vec(nodeB to nodeA), vec(nodeB to nodeC). **Recommend to set nodeB as a common initial point**
@@ -199,7 +209,7 @@ func getAngles_fromNodesArray(_ nodeA: [CGPoint], _ nodeB: [CGPoint], _ nodeC: [
         let vectorA = CGPoint(x: dotA.x - dotB.x, y: dotA.y - dotB.y)
         let vectorB = CGPoint(x: dotC.x - dotB.x, y: dotC.y - dotB.y)
         
-        let newAngle = dotProduct(vectorA, vectorB, isRadian: false)
+        let newAngle = calculateAngle(vectorA, vectorB, isRadian: false)
         angles.append(newAngle)
     }
     
@@ -262,6 +272,7 @@ func preprocessCoordinates(from fileURL:URL, filename: String) -> URL {
         "leftHip", "rightHip", "leftShoulder", "rightShoulder", "leftWrist", "rightWrist", "leftHeel", "rightHeel", "nose",
     ]
     var sourceIndexes:[Int?] = []
+    print(headers)
     for node in sourceNodes {
         /// Only save X Coordinates' index
         let newIndex = headers.firstIndex(of: "\(node)_x")
@@ -518,7 +529,7 @@ func calculate_parameters(of intermediate_fileURL: URL) -> [String:Double] {
     let stepAsymmetry = abs(leftStrideDeviation - rightStrideDeviation) / (leftStrideDeviation + rightStrideDeviation) * 100
     
     // TODO: Read person height information, and Calculate the heightPixel Value
-    let heightPixel = 0.34
+    let heightPixel = 0.45
     /// Calculate StepLength
     let sorted_stepLength = stepLength.sorted { $0 > $1 }
     let param_stepLength = sorted_stepLength[10] * heightPixel * 0.9
